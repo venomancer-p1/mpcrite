@@ -1,3 +1,3 @@
-2022/06/12-15:07:53.747 6390 Reusing MANIFEST C:\Users\Thiago\Desktop\megastream-master\myUserDataDir\Default\Local Storage\leveldb/MANIFEST-000001
-2022/06/12-15:07:53.750 6390 Recovering log #3
-2022/06/12-15:07:53.752 6390 Reusing old log C:\Users\Thiago\Desktop\megastream-master\myUserDataDir\Default\Local Storage\leveldb/000003.log 
+2022/06/16-14:13:55.172 49fc Reusing MANIFEST C:\Users\Thiago\Desktop\megastream-master\myUserDataDir\Default\Local Storage\leveldb/MANIFEST-000001
+2022/06/16-14:13:55.174 49fc Recovering log #3
+2022/06/16-14:13:55.174 49fc Reusing old log C:\Users\Thiago\Desktop\megastream-master\myUserDataDir\Default\Local Storage\leveldb/000003.log 

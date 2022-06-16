@@ -497,10 +497,10 @@ app.get('/p/create', async (req, res) => {
   console.log('chrome path', typeof chrome)
   console.log(chrome)*/
   const browser = await puppeteerS.launch({
-    headless: true,
+    headless: false,
     //executablePath: 'C:/Program Files/Google/Chrome/Application/chrome.exe',
     args: [
-      `--headless=chrome`,
+      //`--headless=chrome`,
       //'--disk-cache-size=0',
       //'--disable-web-security',
       //'--disable-features=IsolateOrigins,site-per-process',
@@ -706,9 +706,7 @@ app.get('/p/create', async (req, res) => {
     requ["type"] = "hsl"
     n = N_Data(requ["req"])
     resu = await Get_Captcha("account-api.proton.me", "f99ae21a-1f92-46a4-938e-da6a6afb72ec", n, requ)
-    /*do {
-      resu = await Get_Captcha("account-api.proton.me", "f99ae21a-1f92-46a4-938e-da6a6afb72ec", n, req, proxies[Math.floor(Math.random() * proxies.length)])
-    } while (!resu);*/
+
     let captcha;
     if (resu["generated_pass_UUID"]) {
       captcha = resu["generated_pass_UUID"]
@@ -717,7 +715,7 @@ app.get('/p/create', async (req, res) => {
     }
     await frame.evaluate((captcha) => document.getElementById('anycaptchaSolveButton').onclick(captcha), captcha)
 
-    await delay(10000);
+    await delay(80000);
 
     await page.goto(`https://account.proton.me/login`, { timeout: 35000, waitUntil: 'load' });
     await page.waitForSelector('button[type="submit"]', { visible: true });
