@@ -549,7 +549,7 @@ app.get('/p/create', async (req, res) => {
           contentType: 'application/json',
           body: `{"Code":1000,"IP":"185.153.176.182","Lat":-23.5335,"Long":-46.635899999999999,"Country":"BR","ISP":"Tefincom S.A."}`
         })
-      } else if (request.url().includes('api/v4/users')) {
+      } /*else if (request.url().includes('api/v4/users')) {
         if (index != 0) {
           console.log('Proxied')
           useProxy(request, 'http://' + proxy_);
@@ -558,7 +558,7 @@ app.get('/p/create', async (req, res) => {
           index++;
         }
         console.log('a', index)
-      }
+      }*/
       else if (request.url().includes('unsupported.')) {
         console.log('aborted');
         request.abort();
@@ -715,7 +715,7 @@ app.get('/p/create', async (req, res) => {
     }
     await frame.evaluate((captcha) => document.getElementById('anycaptchaSolveButton').onclick(captcha), captcha)
 
-    await delay(80000);
+    await delay(10000);
 
     await page.goto(`https://account.proton.me/login`, { timeout: 35000, waitUntil: 'load' });
     await page.waitForSelector('button[type="submit"]', { visible: true });
