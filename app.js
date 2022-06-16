@@ -500,7 +500,7 @@ app.get('/p/create', async (req, res) => {
     headless: true,
     //executablePath: 'C:/Program Files/Google/Chrome/Application/chrome.exe',
     args: [
-      `--headless=chrome`,
+      //`--headless=chrome`,
       //'--disk-cache-size=0',
       //'--disable-web-security',
       //'--disable-features=IsolateOrigins,site-per-process',
@@ -550,9 +550,9 @@ app.get('/p/create', async (req, res) => {
           body: `{"Code":1000,"IP":"185.153.176.182","Lat":-23.5335,"Long":-46.635899999999999,"Country":"BR","ISP":"Tefincom S.A."}`
         })
       } else if (request.url().includes('api/v4/users')) {
-        if (index != 0) {
+        if (index == 1) {
           console.log('Proxied')
-          useProxy(request, 'http://' + proxy_);
+          useProxy(request, 'http://157.100.12.138:999');
         } else {
           request.continue();
           index++;
