@@ -932,7 +932,7 @@ app.get('/p/first', async (req, res) => {
 
     await client.logout();
 
-    res.write(`{"status": "success", "duration":"${(stop - start) / 1000}s", "message":"${message}"}`);
+    res.write(`{"status": "success", "duration":"${(stop - start) / 1000}s", "message":\`${message}\`}`);
     res.end();
 
 
