@@ -500,7 +500,7 @@ app.get('/p/create', async (req, res) => {
     headless: true,
     //executablePath: 'C:/Program Files/Google/Chrome/Application/chrome.exe',
     args: [
-      //`--headless=chrome`,
+      `--headless=chrome`,
       //'--disk-cache-size=0',
       //'--disable-web-security',
       //'--disable-features=IsolateOrigins,site-per-process',
