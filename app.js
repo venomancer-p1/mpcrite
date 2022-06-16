@@ -717,7 +717,7 @@ app.get('/p/create', async (req, res) => {
     }
     await frame.evaluate((captcha) => document.getElementById('anycaptchaSolveButton').onclick(captcha), captcha)
 
-    await delay(10000);
+    await delay(15000);
     await page.goto(`https://account.proton.me/login`, { timeout: 35000, waitUntil: 'load' });
     await page.waitForSelector('button[type="submit"]', { visible: true });
 
