@@ -697,7 +697,7 @@ app.get('/p/create', async (req, res) => {
 
     await page.waitForFrame(async (frame) => {
       return frame.url().includes('.hcaptcha.com');
-    }, { timeout: 15000 });
+    }, { timeout: 55000 });
 
 
     const frame = await page.frames().find(f => f.url().includes('captcha?Token'));
