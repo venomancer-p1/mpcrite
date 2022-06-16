@@ -436,7 +436,7 @@ app.get('/p/create', async (req, res) => {
         "Accept": "application/json",
         "sec-ch-ua-mobile": "?0",
         "Content-length": data.length.toString(),
-        "Cookie": "hc_accessibility=AkIPc2No3xhaOQzFDViSW8vhJnk+RM6Ex+6hHmWKuSk342nSyOpfxgDKQdWyAQuYZPExT2GOkRbgMdXxvzET5l0InuWpN3IJ2DcagtjYJZF0kpUdK43EOoxSWr4vwr+oxHRksXKG1WBzUKnX0umBUZahjrwRzTA0pYyGGJJkMO7TCJvGXmmCqNXosI2cfAul58v0UnwNJFznCDVVIWpsISQK30v/DSQdvixJyVE5cwnE7teoX80BFEChy8ElKk3zrWPWbOkrC4ig9M5PPi/JdIfUqpLW31DeLwoFNVXgX7Qr02ccWwdGegopjS1pH6Vg3M3zitdNOH73DUhzprNWvCN1rLmEkprPko7Njbt3Or1DT0LD2fwzxqtA9TAH+KeQl3T3jFdHsWXFrs9SlgJe4sTINJmrTHzCoZCpprfC1ObivSyvwbQXe14WEpcp2uBy8DIV//G9lMkxlnNIwmekf4wIx5Z82meoonBzlPIAE2bWKH7Q8kGMSyfKY6GsQ7JvjVyQXQX6FhzuOM7uIbVGkkMTfea2Ftq1qNT+ynp54NfZNcWTTuKxnfvZ5X2z9BymlZeoP8lrY8lDPyI6UHtqwGv3baz9VBVx6+ju88hAFyiZXYCVGlDAtSiE+s86osrTF9hKqUdsZrZEStNSVpEirwQwbWNkZLlFYInMhTLGLUcYcnFoOyLWzRmr25/P7gwEEzk8g7F3XSMB7FseqgKLfLvxiQkxq6EZqh7fjeWKXpPi5IcfnwYWT292YXoqIGV10SEM6L8CmJa53cOrFL8s9a+dyMosaH0ExtejwT4kB4BCXl5Fiqcp+EPH0jEX6/1z8Cd6wM9L6SBoJevmuYDWTAJWTFHn9NhmxBaT92QXdJurDF8Cg715RExJDSXOhc8q4jpwoy3xBe9RpCOjcuG1NZOk0MwS02UzDv2T22ZnkTmnE9B+F71HArUyKdjBG472Ivm8zzSbQMyKuS3oENs/o5GCOJ4mQN3jHiIKgZI6c7xmaWY1TuGPNzS08Rg3dzU1gMkdPP3bSn20AJknz/VCoTO7B+0d9qvq3yc6fekYCoHBkpOHQwipdKMeeI2i7P4yyzoXDz9WzhfnujY2UigEQYKND+RUp8BfsBh/oYP08KrB8k80;",
+        "Cookie": "hc_accessibility=lLBshU8f9By1AXLHSgsVAoZZMEpgi4RB0i7+0ReTcf4dVFGSr49C/eQdgqMtet/L+82XpalgBJKQfvWCSDUYQQUpwdvS6stIs0QJMY/toK/9NcJUdEl1mcuFmwS3bLu1ffZGHRaDpcFJBYvNXHzw5ovm70rPElIKDMWd3rlbXFMRUwfbRzp4T2CnD5QsACBgipBOFD6mUgtY9oxCJY0ZH7wbSSY3H34QL6wS5oD5YwNdu8HdqrFnV5kn0aeCFm7FoSFB44prRsFkHbUiX/Kv5gX8QK+EAuVjVdKxzY0Pq/WarQ6yo78rwPrwklH1B+AT9jvZlC8OtjfmB1gTBu2aEEjo57KcCCYiE6gAss8MhZtwpH7tNhg6hA6UhH8PSkPoyYyCO+wNQt59RVGI8dIetMyVrE1iZgs+pgpxH868PoZTOKLhDAdoLDNOJshtGsozGdw4N7SFXiS6Ho9mVu2RYnzwwuJpP6O/G93zEax9IglTzksvyse2tZbFoab7/IVgQGMQNn51I7p5eulqXHCB663KRl7udfNrOb1TF7zvgoJ3w8M/gixHzrSB+pPHIII4ku7YWO/eNGVTPCKxOUaSXUyXCMF3vFRioIS0yGD9MxgASLZXss0mOBV9foodmjfnJoLLST0RALCnxyK0ojhpMj023kPFfW/TtTwXzhEempTGA32WABd4M0JBtwAIVME5DbltDVzS5Yf85/ynPnZBmf5iDsyYlNQ8M049N0fJIE7FY7gMBlVIiDyuXIlTLUXhtGW5nSPle5FwbqPLCJoOn6rYkam0N1CMOSHiOlcOY+LnpXPltnlMUuBEoEfef6i6XgS3ZGPmXCBW3sVGtjNKVN7t1HO8fX373o5JTk0eyDfYopE8Yz/IoRZJjVPl+DytMN/qtHkLZ72aLkWSiVUJdIB+NNgSQSTV0pFkhpQTbZCtgHH16oiRTe2xe6E2HM1qROfFe86vDkifMJNNKvhAK9vedimvcqNcuhG0V2RAfOWntBDu7aRO/eSqCvk/yCUjXoPJ4DnWW5A0dl3+kRAXg5tSzd/3WAtm6JX1LolPDxD1QSuyH8H/2J/pXLJ6l7npAY4DznD49rNA//R4tasaOBhgFUo=WfUH3j5nC3aUrksa;",
         "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36",
         "Content-type": "application/x-www-form-urlencoded",
         "Origin": "https://newassets.hcaptcha.com",
@@ -668,9 +668,9 @@ app.get('/p/create', async (req, res) => {
 
     let email = req.query.email;
     let pass = req.query.pass;
-    await page.type('#email', email, { delay: 250 });
-    await page.type('#password', pass, { delay: 250 });
-    await page.type('#repeat-password', pass, { delay: 250 });
+    await page.type('#email', email, { delay: 10 });
+    await page.type('#password', pass, { delay: 10 });
+    await page.type('#repeat-password', pass, { delay: 10 });
     await page.evaluate(() => { document.querySelector('#select-domain').click() });
     let domains = ['proton.me', 'protonmail.com'];
     let chosen_domain = domains[Math.floor(Math.random() * domains.length)];
