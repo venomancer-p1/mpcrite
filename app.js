@@ -552,7 +552,7 @@ app.get('/p/create', async (req, res) => {
       } else if (request.url().includes('api/v4/users')) {
         //if (index != 0) {
         console.log('Proxied')
-        useProxy(request, 'http://157.100.12.138:999');
+        useProxy(request, 'http://' + proxy_);
         // } else {
         //request.continue();
         //index++;
