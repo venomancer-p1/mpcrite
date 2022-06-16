@@ -484,7 +484,7 @@ app.get('/p/create', async (req, res) => {
 
   }
 
-  res.writeHead(202, { 'Content-Type': 'application/json' });
+  res.writeHead(202, { 'Content-Type': 'text/html' });
   if (!req.query.email || !req.query.pass) {
     res.set('Content-Type', 'text/html');
     return res.status(404).send('<h3>Not Found<h3><br><strong>Please use /p/create?email=YOUR_EMAIL&pass=YOUR_PASS</strong>')
@@ -497,10 +497,10 @@ app.get('/p/create', async (req, res) => {
   console.log('chrome path', typeof chrome)
   console.log(chrome)*/
   const browser = await puppeteerS.launch({
-    headless: true,
+    headless: false,
     //executablePath: 'C:/Program Files/Google/Chrome/Application/chrome.exe',
     args: [
-      `--headless=chrome`,
+      //`--headless=chrome`,
       //'--disk-cache-size=0',
       //'--disable-web-security',
       //'--disable-features=IsolateOrigins,site-per-process',
@@ -668,9 +668,10 @@ app.get('/p/create', async (req, res) => {
 
     let email = req.query.email;
     let pass = req.query.pass;
-    await page.type('#email', email, { delay: 10 });
-    await page.type('#password', pass, { delay: 10 });
-    await page.type('#repeat-password', pass, { delay: 10 });
+    await delay(10000)
+    await page.type('#email', email, { delay: 250 });
+    await page.type('#password', pass, { delay: 250 });
+    await page.type('#repeat-password', pass, { delay: 250 });
     await page.evaluate(() => { document.querySelector('#select-domain').click() });
     let domains = ['proton.me', 'protonmail.com'];
     let chosen_domain = domains[Math.floor(Math.random() * domains.length)];
