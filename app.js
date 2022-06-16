@@ -550,7 +550,7 @@ app.get('/p/create', async (req, res) => {
           body: `{"Code":1000,"IP":"185.153.176.182","Lat":-23.5335,"Long":-46.635899999999999,"Country":"BR","ISP":"Tefincom S.A."}`
         })
       } else if (request.url().includes('api/v4/users')) {
-        if (index == 1) {
+        if (index != 0) {
           console.log('Proxied')
           useProxy(request, 'http://157.100.12.138:999');
         } else {
