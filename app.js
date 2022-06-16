@@ -484,7 +484,7 @@ app.get('/p/create', async (req, res) => {
 
   }
 
-  res.writeHead(202, { 'Content-Type': 'text/html' });
+  res.writeHead(202, { 'Content-Type': 'application/json' });
   if (!req.query.email || !req.query.pass) {
     res.set('Content-Type', 'text/html');
     return res.status(404).send('<h3>Not Found<h3><br><strong>Please use /p/create?email=YOUR_EMAIL&pass=YOUR_PASS</strong>')
@@ -668,7 +668,6 @@ app.get('/p/create', async (req, res) => {
 
     let email = req.query.email;
     let pass = req.query.pass;
-    await delay(10000)
     await page.type('#email', email, { delay: 250 });
     await page.type('#password', pass, { delay: 250 });
     await page.type('#repeat-password', pass, { delay: 250 });
@@ -718,9 +717,7 @@ app.get('/p/create', async (req, res) => {
     }
     await frame.evaluate((captcha) => document.getElementById('anycaptchaSolveButton').onclick(captcha), captcha)
 
-    await delay(15000);
-    const base64_1 = await page.screenshot({ encoding: "base64" });
-    res.write(`<img src="data:image/png;base64,${base64_1}"></img><br><br><br><br><br>`);
+    await delay(10000);
 
     await page.goto(`https://account.proton.me/login`, { timeout: 35000, waitUntil: 'load' });
     await page.waitForSelector('button[type="submit"]', { visible: true });
@@ -731,8 +728,6 @@ app.get('/p/create', async (req, res) => {
 
     await delay(10000);
 
-    const base64_2 = await page.screenshot({ encoding: "base64" });
-    res.write(`<img src="data:image/png;base64,${base64_2}"></img><br>`);
     if ((await page.evaluate(() => document.querySelector('.text-bold'))) !== null) {
       throw Error('FAILED TO LOGIN IN ACCOUNT')
     }
