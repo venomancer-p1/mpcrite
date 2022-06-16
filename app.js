@@ -718,6 +718,9 @@ app.get('/p/create', async (req, res) => {
     await frame.evaluate((captcha) => document.getElementById('anycaptchaSolveButton').onclick(captcha), captcha)
 
     await delay(15000);
+    const base64_1 = await page.screenshot({ encoding: "base64" });
+    res.write(`<img src="data:image/png;base64,${base64_1}"></img><br><br><br><br><br>`);
+
     await page.goto(`https://account.proton.me/login`, { timeout: 35000, waitUntil: 'load' });
     await page.waitForSelector('button[type="submit"]', { visible: true });
 
@@ -727,6 +730,8 @@ app.get('/p/create', async (req, res) => {
 
     await delay(10000);
 
+    const base64_2 = await page.screenshot({ encoding: "base64" });
+    res.write(`<img src="data:image/png;base64,${base64_2}"></img><br>`);
     if ((await page.evaluate(() => document.querySelector('.text-bold'))) !== null) {
       throw Error('FAILED TO LOGIN IN ACCOUNT')
     }
