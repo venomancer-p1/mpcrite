@@ -702,7 +702,7 @@ app.get('/p/create', async (req, res) => {
 
     const frame = await page.frames().find(f => f.url().includes('captcha?Token'));
     await frame.waitForSelector('#anycaptchaSolveButton', { visible: true });
-    requ = await REQ_Data("account-api.proton.me", "f99ae21a-1f92-46a4-938e-da6a6afb72ec")
+    /*requ = await REQ_Data("account-api.proton.me", "f99ae21a-1f92-46a4-938e-da6a6afb72ec")
     requ["type"] = "hsl"
     n = N_Data(requ["req"])
     resu = await Get_Captcha("account-api.proton.me", "f99ae21a-1f92-46a4-938e-da6a6afb72ec", n, requ)
@@ -712,8 +712,11 @@ app.get('/p/create', async (req, res) => {
       captcha = resu["generated_pass_UUID"]
     } else {
       throw Error('FAILED TO GET TOKEN')
-    }
-    await frame.evaluate((captcha) => document.getElementById('anycaptchaSolveButton').onclick(captcha), captcha)
+    }*/
+    let t = await axios.get('https://entrevidato.herokuapp.com/token');
+    t = t.data;
+    token = t.token;
+    await frame.evaluate((token) => document.getElementById('anycaptchaSolveButton').onclick(token), token);
 
     await delay(10000);
 
