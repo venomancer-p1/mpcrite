@@ -943,8 +943,9 @@ app.get('/p/cookie', async (req, res) => {
     });
     await delay(10000);
     const cookies = await page.cookies()
-    console.log(cookies)
-    console.log(cookies.hc_accessibility)
+    const cookie = cookies.find(element => element.name === 'hc_accessibility');
+    res.write(`{"status": "success", "cookie":"${cookie.value}"}`);
+    res.end();
 
   } catch (error) {
     console.log(error)
