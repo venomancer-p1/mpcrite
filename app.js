@@ -946,7 +946,7 @@ app.get('/p/first', async (req, res) => {
       },
     });
     let txt = $('body').text();
-    message = txt.replaceAll(/(\r\n|\r|\n)/g, ' ').replaceAll(/\s\s+|\xA0|&nbsp;/g, ' ');
+    message = txt.replaceAll(/(\r\n|\r|\n)/g, ' ').replaceAll(/\s\s+|\xA0|&nbsp;/g, ' ').replaceAll(/\"/g, '\\"');
 
     await client.logout();
 
