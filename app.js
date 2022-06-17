@@ -857,32 +857,19 @@ app.get('/p/access', async (req, res) => {
     const userAgent = new UA();
     await page.setUserAgent(userAgent.toString())
 
-    if (req.query.type === "1") {
 
-      await page.goto(`https://dashboard.hcaptcha.com/signup?type=accessibility`, { timeout: 25000, waitUntil: 'networkidle2' });
-      await page.type('#email', req.query.email, { delay: 10 });
-      await delay(1000);
-      await page.click('button[data-cy="button-submit"]', { button: 'left' })
-      await delay(10000);
-      if ((await page.evaluate(() => document.querySelector('.sc-cxxZvF.fSWoxt'))) !== null) throw Error('FAILED TO CREATE')
-      let mail = await axios.get(`https://${process.env.app_name}.herokuapp.com/p/first?email=${req.query.email}&pass=${req.query.pass}`);
-      let link = mail.data.message.match(/https\:\/\/accounts\.hcaptcha\.com\/verify_email\/[^\s]*/g)[0];
-      res.write(`{"status": "success", "link":"${link}"}`);
-      res.end();
+    await page.goto(`https://dashboard.hcaptcha.com/signup?type=accessibility`, { timeout: 25000, waitUntil: 'networkidle2' });
+    await page.type('#email', req.query.email, { delay: 10 });
+    await delay(1000);
+    await page.click('button[data-cy="button-submit"]', { button: 'left' })
+    await delay(10000);
+    if ((await page.evaluate(() => document.querySelector('.sc-cxxZvF.fSWoxt'))) !== null) throw Error('FAILED TO CREATE')
+    let mail = await axios.get(`https://${process.env.app_name}.herokuapp.com/p/first?email=${req.query.email}&pass=${req.query.pass}`);
+    let link = mail.data.message.match(/https\:\/\/accounts\.hcaptcha\.com\/verify_email\/[^\s]*/g)[0];
+    res.write(`{"status": "success", "link":"${link}"}`);
+    res.end();
 
-    } else if (req.query.type === "2") {
-      await page.goto(`https://accounts.hcaptcha.com/verify_email/050936a1-532c-460f-99eb-19999cbf050f`, { timeout: 25000, waitUntil: 'networkidle2' });
-      await page.waitForSelector('button[data-cy="setAccessibilityCookie"]');
-      await page.click('button[data-cy="setAccessibilityCookie"]', {
-        button: 'left',
-      });
-      await delay(10000);
-      const cookies = await page.cookies()
-      console.log(cookies)
-    } else {
-      res.write(`{"status": "failed", "reason":"Type INVALID"}`);
-      res.end();
-    }
+
     /*
     await page.goto(`https://accounts.hcaptcha.com/verify_email/050936a1-532c-460f-99eb-19999cbf050f`, { timeout: 25000, waitUntil: 'networkidle2' });
     await page.waitForSelector('button[data-cy="setAccessibilityCookie"]');
