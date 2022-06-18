@@ -963,7 +963,9 @@ app.get('/p/tor', async (req, res) => {
 
   res.writeHead(202, { 'Content-Type': 'text/html' });
   const browser = await puppeteer.launch({
-    headless: false
+    headless: false,
+    // Add the following line.
+    args: ['--proxy-server=socks5://127.0.0.1:9052']
   });
   console.log('Init');
   res.setTimeout(150000, function () {
