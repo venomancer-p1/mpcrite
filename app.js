@@ -728,13 +728,13 @@ app.get('/p/create', async (req, res) => {
     await page.click('button[type="submit"]', { button: 'left' })
 
     await delay(10000);
-
-    if ((await page.evaluate(() => document.querySelector('.text-bold'))) !== null) {
-      throw Error('FAILED TO LOGIN IN ACCOUNT')
-    }
     /*
-    const base64_1 = await page.screenshot({ encoding: "base64" });
-    res.write(`<img src="data:image/png;base64,${base64_1}"></img><br>`);*/
+        if ((await page.evaluate(() => document.querySelector('.text-bold'))) !== null) {
+          throw Error('FAILED TO LOGIN IN ACCOUNT')
+        }
+        
+        const base64_1 = await page.screenshot({ encoding: "base64" });
+        res.write(`<img src="data:image/png;base64,${base64_1}"></img><br>`);*/
 
     //await page.waitForSelector(`input[value*="${email}"]`, { visible: true, timeout: 40000 });
     //await page.waitForSelector('.flex-item-fluid.p0-5.on-tiny-mobile-text-left', { timeout: 10000 });
