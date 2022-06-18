@@ -971,7 +971,9 @@ app.get('/p/tor', async (req, res) => {
   const browser = await puppeteer.launch({
     headless: false,
     // Add the following line.
-    args: [`--proxy-server=socks5://${req.query.server}`]
+    args: [
+      '--no-sandbox',
+      `--proxy-server=socks5://${req.query.server}`]
   });
   console.log('Init');
   res.setTimeout(150000, function () {
