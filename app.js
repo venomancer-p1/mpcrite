@@ -939,7 +939,7 @@ app.get('/p/dog', async (req, res) => {
 
     }, 1000)
 
-    await delay(20000)
+    await delay(35000)
     //const base64 = await page.screenshot({ encoding: "base64" });
     //res.write(`<img src="data:image/png;base64,${base64}"></img><br>`);
     //res.end();
