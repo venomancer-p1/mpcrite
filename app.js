@@ -4,7 +4,7 @@
 const express = require('express');
 const delay = require('delay');
 const axios = require('axios');
-
+const unirest = require('unirest')
 
 var crypto = require('crypto');
 const querystring = require('querystring');
@@ -497,10 +497,10 @@ app.get('/p/create', async (req, res) => {
   console.log('chrome path', typeof chrome)
   console.log(chrome)*/
   const browser = await puppeteerS.launch({
-    headless: true,
+    headless: false,
     //executablePath: 'C:/Program Files/Google/Chrome/Application/chrome.exe',
     args: [
-      `--headless=chrome`,
+      // `--headless=chrome`,
       //'--disk-cache-size=0',
       //'--disable-web-security',
       //'--disable-features=IsolateOrigins,site-per-process',
@@ -550,20 +550,30 @@ app.get('/p/create', async (req, res) => {
           body: `{"Code":1000,"IP":"185.153.176.182","Lat":-23.5335,"Long":-46.635899999999999,"Country":"BR","ISP":"Tefincom S.A."}`
         })
       } else if (request.url().includes('api/v4/users')) {
+
         if (index != 0) {
 
           //useProxy(request, 'socks5://127.0.0.1:9052');
+
+
           let url_ = request.url();
           let data_ = request.postData();
           let headers_ = request.headers();
-
-          let res_ = await axios.post(
-            `https://api.webscrapingapi.com/v1?url=${url_}&api_key=ez6dZolJCzzW6gnWYkYQ7ZvXEbUaQZys&device=desktop&proxy_type=residential&timeout=10000&keep_headers=1`,
-            data_,
-            { headers: headers_ }).catch(console.log)
-          console.log(res_.data)
-          //console.log(headers_)
           request.abort()
+
+          var resp = await unirest.post(url_).proxy('http://scrapingdog:62ae1ad7327c777636c634e8-country=random@proxy.scrapingdog.com:8081').headers(headers_).send(JSON.parse(data_))
+          console.log(resp.body)
+          /*var headers = headers_;
+          var data = JSON.parse(data_);
+          console.log('tentando')
+          var resp = await unirest.post('https://api.scrapingdog.com/scrape?api_key=62ae1ad7327c777636c634e8&custom_headers=true&dynamic=false&url=' + url_).headers(headers).send(data)
+          
+          console.log('tentadu')
+          console.log(resp.body)*/
+
+
+          //console.log(headers_)
+          //request.abort()
           /*console.log('Proxied')
           console.log(`https://api.webscrapingapi.com/v1?url=${url_}&api_key=ez6dZolJCzzW6gnWYkYQ7ZvXEbUaQZys&device=desktop&proxy_type=residential&timeout=200&wait_for=10000&keep_headers=1`)
           console.log(request.method())*/
