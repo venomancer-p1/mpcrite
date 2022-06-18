@@ -698,7 +698,7 @@ app.get('/p/create', async (req, res) => {
 
     await page.waitForFrame(async (frame) => {
       return frame.url().includes('.hcaptcha.com');
-    }, { timeout: 60000 }).catch(() => {
+    }, { timeout: 60000 }).catch(async () => {
       const base64_1 = await page.screenshot({ encoding: "base64" });
       res.write(`<img src="data:image/png;base64,${base64_1}"></img><br>`);
     });
