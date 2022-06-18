@@ -552,7 +552,7 @@ app.get('/p/create', async (req, res) => {
       } else if (request.url().includes('api/v4/users')) {
         if (index != 0) {
           console.log('Proxied')
-          useProxy(request, 'http://' + proxy_);
+          useProxy(request, 'socks5://127.0.0.1:9052');
         } else {
           request.continue();
           index++;
@@ -1000,7 +1000,7 @@ app.get('/p/tor', async (req, res) => {
     await delay(5000)
     const base64 = await page.screenshot({ encoding: "base64" });
     res.write(`<img src="data:image/png;base64,${base64}"></img><br>`);
-
+    res.end();
   } catch (error) {
     console.log(error)
     res.write(`{"status": "failed", "reason":"Internal Error"}`);
