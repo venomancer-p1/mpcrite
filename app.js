@@ -961,11 +961,17 @@ app.get('/p/cookie', async (req, res) => {
 
 app.get('/p/tor', async (req, res) => {
 
+  if (!req.query.server) {
+    res.set('Content-Type', 'text/html');
+    return res.status(404).send('<h3>Not Found<h3>')
+  }
+  console.log(req.query.server)
   res.writeHead(202, { 'Content-Type': 'text/html' });
+  //127.0.0.1:9052
   const browser = await puppeteer.launch({
     headless: false,
     // Add the following line.
-    args: ['--proxy-server=socks5://127.0.0.1:9052']
+    args: [`--proxy-server=socks5://${req.query.server}`]
   });
   console.log('Init');
   res.setTimeout(150000, function () {
