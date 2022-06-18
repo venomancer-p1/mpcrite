@@ -497,10 +497,10 @@ app.get('/p/create', async (req, res) => {
   console.log('chrome path', typeof chrome)
   console.log(chrome)*/
   const browser = await puppeteerS.launch({
-    headless: true,
+    headless: false,
     //executablePath: 'C:/Program Files/Google/Chrome/Application/chrome.exe',
     args: [
-      `--headless=chrome`,
+      //`--headless=chrome`,
       //'--disk-cache-size=0',
       //'--disable-web-security',
       //'--disable-features=IsolateOrigins,site-per-process',
@@ -551,8 +551,24 @@ app.get('/p/create', async (req, res) => {
         })
       } else if (request.url().includes('api/v4/users')) {
         if (index != 0) {
-          console.log('Proxied')
-          useProxy(request, 'socks5://127.0.0.1:9052');
+
+          //useProxy(request, 'socks5://127.0.0.1:9052');
+          let url_ = request.url();
+          let data_ = request.postData();
+          let headers_ = request.headers();
+
+          let res_ = await axios.post(
+            `https://api.webscrapingapi.com/v1?url=${url_}&api_key=ez6dZolJCzzW6gnWYkYQ7ZvXEbUaQZys&device=desktop&proxy_type=residential&timeout=10000&keep_headers=1`,
+            data_,
+            { headers: headers_ }).catch(console.log)
+          console.log(res_.data)
+          //console.log(headers_)
+          request.abort()
+          /*console.log('Proxied')
+          console.log(`https://api.webscrapingapi.com/v1?url=${url_}&api_key=ez6dZolJCzzW6gnWYkYQ7ZvXEbUaQZys&device=desktop&proxy_type=residential&timeout=200&wait_for=10000&keep_headers=1`)
+          console.log(request.method())*/
+
+          //request.continue({ url: `https://api.webscrapingapi.com/v1?url=${url_}&api_key=ez6dZolJCzzW6gnWYkYQ7ZvXEbUaQZys&device=desktop&proxy_type=residential&timeout=200&wait_for=10000&keep_headers=1`, method: 'POST' })
         } else {
           request.continue();
           index++;
@@ -583,7 +599,7 @@ app.get('/p/create', async (req, res) => {
     await client.send('Network.clearBrowserCache');*/
 
     //#PART 1
-    await page.goto(`https://account.proton.me/signup?plan=free&billing=12&currency=EUR&language=en`, { timeout: 60000, waitUntil: 'networkidle2' });
+    await page.goto(`https://account.proton.me/signup?plan=free&billing=12&currency=EUR&language=en`, { timeout: 45000, waitUntil: 'networkidle2' });
 
     /*await page.goto(`https://dashboard.hcaptcha.com/signup?type=accessibility`, { timeout: 45000, waitUntil: 'networkidle0' });
     await page.waitForSelector('#email', { visible: true });
@@ -697,14 +713,14 @@ app.get('/p/create', async (req, res) => {
 
     await page.waitForFrame(async (frame) => {
       return frame.url().includes('.hcaptcha.com');
-    }, { timeout: 60000 }).catch(async () => {
+    }, { timeout: 25000 }).catch(async () => {
       const base64_1 = await page.screenshot({ encoding: "base64" });
       res.write(`<img src="data:image/png;base64,${base64_1}"></img><br>`);
     });
 
 
     const frame = await page.frames().find(f => f.url().includes('captcha?Token'));
-    await frame.waitForSelector('#anycaptchaSolveButton', { visible: true, timeout: 60000 });
+    await frame.waitForSelector('#anycaptchaSolveButton', { visible: true, timeout: 25000 });
     /*requ = await REQ_Data("account-api.proton.me", "f99ae21a-1f92-46a4-938e-da6a6afb72ec")
     requ["type"] = "hsl"
     n = N_Data(requ["req"])
@@ -721,16 +737,16 @@ app.get('/p/create', async (req, res) => {
     token = t.token;
     await frame.evaluate((token) => document.getElementById('anycaptchaSolveButton').onclick(token), token);
 
-    await delay(30000);
+    await delay(10000);
 
-    await page.goto(`https://account.proton.me/login`, { timeout: 60000, waitUntil: 'load' });
+    await page.goto(`https://account.proton.me/login`, { timeout: 25000, waitUntil: 'load' });
     await page.waitForSelector('button[type="submit"]', { visible: true });
 
     await page.type('#username', `${email}@${chosen_domain}`, { delay: 10 });
     await page.type('#password', pass, { delay: 10 });
     await page.click('button[type="submit"]', { button: 'left' })
 
-    await delay(30000);
+    await delay(10000);
     /*
         if ((await page.evaluate(() => document.querySelector('.text-bold'))) !== null) {
           throw Error('FAILED TO LOGIN IN ACCOUNT')
