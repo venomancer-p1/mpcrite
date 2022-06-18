@@ -500,7 +500,6 @@ app.get('/p/create', async (req, res) => {
     headless: true,
     //executablePath: 'C:/Program Files/Google/Chrome/Application/chrome.exe',
     args: [
-      '--proxy-server=socks5://127.0.0.1:9052',
       `--headless=chrome`,
       //'--disk-cache-size=0',
       //'--disable-web-security',
@@ -542,7 +541,7 @@ app.get('/p/create', async (req, res) => {
     let alive = await axios.get(`https://entrevidato.herokuapp.com/get`);
     let d = alive.data;
     var proxy_ = d.proxy
-    /*page.on('request', async request => {
+    page.on('request', async request => {
       console.log('ALL', index)
       if (request.url().includes('api/vpn/location')) {
         request.respond({
@@ -568,7 +567,7 @@ app.get('/p/create', async (req, res) => {
         request.continue();
       }
 
-    });*/
+    });
 
 
 
