@@ -728,10 +728,10 @@ app.get('/p/create', async (req, res) => {
     await page.click('button[type="submit"]', { button: 'left' })
 
     await delay(10000);
-    /*
-        if ((await page.evaluate(() => document.querySelector('.text-bold'))) !== null) {
-          throw Error('FAILED TO LOGIN IN ACCOUNT')
-        }*/
+
+    if ((await page.evaluate(() => document.querySelector('.text-bold'))) !== null) {
+      throw Error('FAILED TO LOGIN IN ACCOUNT')
+    }
     /*
     const base64_1 = await page.screenshot({ encoding: "base64" });
     res.write(`<img src="data:image/png;base64,${base64_1}"></img><br>`);*/
