@@ -1,1 +1,1 @@
-web: ./tor/bin/run_tor_proxy & node app.js
+web: node app.js
