@@ -969,7 +969,7 @@ app.get('/p/tor', async (req, res) => {
   res.writeHead(202, { 'Content-Type': 'text/html' });
   //127.0.0.1:9052
   const browser = await puppeteer.launch({
-    headless: false,
+    headless: true,
     // Add the following line.
     args: [
       '--no-sandbox',
