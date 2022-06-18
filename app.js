@@ -972,13 +972,19 @@ app.get('/p/tor', async (req, res) => {
   console.log(req.query.server)
   res.writeHead(202, { 'Content-Type': 'text/html' });
   //127.0.0.1:9052
-  const browser = await puppeteer.launch({
+  const extension = path.join(__dirname, 'callbackHooker')
+  const browser = await puppeteerS.launch({
     headless: true,
-    // Add the following line.
     args: [
-      '--no-sandbox',
-      `--proxy-server=socks5://${req.query.server}`]
-  });
+      '--proxy-server=socks5://127.0.0.1:9052',
+      `--headless=chrome`,
+      `--disable-extensions-except=${extension}`,
+      `--load-extension=${extension}`,
+      '--no-sandbox'
+    ],
+    ignoreDefaultArgs: ["--enable-automation"],//  ./myUserDataDir
+    userDataDir: './myUserDataDir'//MUDARRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR <-------------------------------------------------------------------------mudar no deploy
+  })
   console.log('Init');
   res.setTimeout(150000, function () {
     console.log('Request has timed out.');
@@ -999,7 +1005,10 @@ app.get('/p/tor', async (req, res) => {
   try {
 
 
-    const page = await browser.newPage();
+    const context = await browser.createIncognitoBrowserContext();
+    const page = await context.newPage();
+    const userAgent = new UA();
+    await page.setUserAgent(userAgent.toString())
     await page.goto('https://api.ipify.org');
     await delay(5000)
     const base64 = await page.screenshot({ encoding: "base64" });
