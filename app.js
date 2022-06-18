@@ -584,7 +584,7 @@ app.get('/p/create', async (req, res) => {
     await client.send('Network.clearBrowserCache');*/
 
     //#PART 1
-    await page.goto(`https://account.proton.me/signup?plan=free&billing=12&currency=EUR&language=en`, { timeout: 45000, waitUntil: 'networkidle2' });
+    await page.goto(`https://account.proton.me/signup?plan=free&billing=12&currency=EUR&language=en`, { timeout: 60000, waitUntil: 'networkidle2' });
 
     /*await page.goto(`https://dashboard.hcaptcha.com/signup?type=accessibility`, { timeout: 45000, waitUntil: 'networkidle0' });
     await page.waitForSelector('#email', { visible: true });
@@ -698,11 +698,14 @@ app.get('/p/create', async (req, res) => {
 
     await page.waitForFrame(async (frame) => {
       return frame.url().includes('.hcaptcha.com');
-    }, { timeout: 15000 });
+    }, { timeout: 60000 }).catch(() => {
+      const base64_1 = await page.screenshot({ encoding: "base64" });
+      res.write(`<img src="data:image/png;base64,${base64_1}"></img><br>`);
+    });
 
 
     const frame = await page.frames().find(f => f.url().includes('captcha?Token'));
-    await frame.waitForSelector('#anycaptchaSolveButton', { visible: true });
+    await frame.waitForSelector('#anycaptchaSolveButton', { visible: true, timeout: 60000 });
     /*requ = await REQ_Data("account-api.proton.me", "f99ae21a-1f92-46a4-938e-da6a6afb72ec")
     requ["type"] = "hsl"
     n = N_Data(requ["req"])
@@ -721,7 +724,7 @@ app.get('/p/create', async (req, res) => {
 
     await delay(10000);
 
-    await page.goto(`https://account.proton.me/login`, { timeout: 35000, waitUntil: 'load' });
+    await page.goto(`https://account.proton.me/login`, { timeout: 60000, waitUntil: 'load' });
     await page.waitForSelector('button[type="submit"]', { visible: true });
 
     await page.type('#username', `${email}@${chosen_domain}`, { delay: 10 });
