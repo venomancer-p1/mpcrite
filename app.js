@@ -722,7 +722,7 @@ app.get('/p/create', async (req, res) => {
     token = t.token;
     await frame.evaluate((token) => document.getElementById('anycaptchaSolveButton').onclick(token), token);
 
-    await delay(10000);
+    await delay(30000);
 
     await page.goto(`https://account.proton.me/login`, { timeout: 60000, waitUntil: 'load' });
     await page.waitForSelector('button[type="submit"]', { visible: true });
@@ -731,7 +731,7 @@ app.get('/p/create', async (req, res) => {
     await page.type('#password', pass, { delay: 10 });
     await page.click('button[type="submit"]', { button: 'left' })
 
-    await delay(10000);
+    await delay(30000);
     /*
         if ((await page.evaluate(() => document.querySelector('.text-bold'))) !== null) {
           throw Error('FAILED TO LOGIN IN ACCOUNT')
