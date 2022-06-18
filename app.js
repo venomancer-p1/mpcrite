@@ -962,16 +962,9 @@ app.get('/p/cookie', async (req, res) => {
 app.get('/p/tor', async (req, res) => {
 
   res.writeHead(202, { 'Content-Type': 'text/html' });
-  const browser = await puppeteerS.launch({
-    headless: true,
-    args: [
-      `--headless=chrome`,
-      '--proxy-server=socks5://127.0.0.1:9052',
-      '--no-sandbox'
-    ],
-    ignoreDefaultArgs: ["--enable-automation"],//  ./myUserDataDir
-
-  })
+  const browser = await puppeteer.launch({
+    headless: false
+  });
   console.log('Init');
   res.setTimeout(150000, function () {
     console.log('Request has timed out.');
@@ -991,12 +984,9 @@ app.get('/p/tor', async (req, res) => {
 
   try {
 
-    const context = await browser.createIncognitoBrowserContext();
-    const page = await context.newPage();
-    const userAgent = new UA();
-    await page.setUserAgent(userAgent.toString())
 
-    await page.goto(`https://api.ipify.org`, { timeout: 25000, waitUntil: 'networkidle2' });
+    const page = await browser.newPage();
+    await page.goto('https://api.ipify.org');
     await delay(5000)
     const base64 = await page.screenshot({ encoding: "base64" });
     res.write(`<img src="data:image/png;base64,${base64}"></img><br>`);
