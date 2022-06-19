@@ -819,7 +819,6 @@ app.get('/p/dog', async (req, res) => {
     args: [
       `--headless=chrome`,
       //'--proxy-server=http://34.145.226.144:8080',
-      '--disk-cache-size=0',
       `--disable-extensions-except=${extension}`,
       `--load-extension=${extension}`,
       '--no-sandbox'
@@ -850,16 +849,18 @@ app.get('/p/dog', async (req, res) => {
     const context = await browser.createIncognitoBrowserContext();
     const page = await context.newPage();
     const page2 = await context.newPage();
+    //await page.emulateTimezone('America/Chicago');
+    //await page2.emulateTimezone('America/Chicago');
 
     const userAgent = new UA();
     await page.setUserAgent(userAgent.toString())
     await page2.setUserAgent(userAgent.toString())
     await page.bringToFront();
 
-    const client1 = await page.target().createCDPSession();
+    /*const client1 = await page.target().createCDPSession();
     await client1.send('Network.clearBrowserCookies');
     await client1.send('Network.clearBrowserCache');
-
+*/
 
 
     // I always use this method to get the active page, and not to have to open a new tab
@@ -875,13 +876,15 @@ app.get('/p/dog', async (req, res) => {
     cloakedPage.on('request', async request => {
 
       if (request.method() === "POST" && request.url().includes('/register')) {
-
-        request.abort()
         console.log('Intercepted');
+
+        //useProxy(request, 'http://130.41.85.158:8080');
+        request.abort()
+
         let url_ = request.url();
         let data_ = request.postData();
         let headers_ = request.headers();
-
+        console.log(headers_)
         //62ae4f79883d62763d27004f
         //62ae5651883d62763d270050
         //62ae5984fd72c2764482cfea
@@ -889,8 +892,9 @@ app.get('/p/dog', async (req, res) => {
         //62ae5c2d883d62763d270052
         //62ae5fb211d1ea764b2f264c
         //62ae5f6f883d62763d270054
-
-        unirest.post(url_).proxy(`http://scrapingdog:${proxies[Math.floor(Math.random() * proxies.length)]}-country=random@proxy.scrapingdog.com:8081`).headers(headers_).send(JSON.parse(data_)).then((response) => {
+        let c = proxies[Math.floor(Math.random() * proxies.length)]
+        console.log(c)
+        unirest.post(url_).proxy(`http://scrapingdog:${c}-country=random@proxy.scrapingdog.com:8081`).send(JSON.parse(data_)).then((response) => {
           console.log(response.body)
           api_k = response.body._id;
         })
@@ -963,14 +967,15 @@ app.get('/p/dog', async (req, res) => {
 
       seconds++;
 
-      if (seconds > 35) {
+      if (seconds > 25) {
         clearInterval(checka)
-        throw new Error('Timeout during resolve')
+        //throw new Error('Timeout during resolve')
       }
 
     }, 1000)
 
-    await delay(35000);
+    await delay(26000);
+    throw new Error('Timeout during resolve')
     //const base64 = await page.screenshot({ encoding: "base64" });
     //res.write(`<img src="data:image/png;base64,${base64}"></img><br>`);
     //res.end();
