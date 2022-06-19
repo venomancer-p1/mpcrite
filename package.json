@@ -10,6 +10,7 @@
     "lodash": "^4.17.21",
     "mail-proton-api": "github:Thiago2703/prtn",
     "puppeteer": "^14.3.0",
+    "puppeteer-afp": "^1.0.1",
     "puppeteer-extra": "^3.2.3",
     "puppeteer-extra-plugin-stealth": "^2.9.0",
     "puppeteer-page-proxy": "^1.2.8",

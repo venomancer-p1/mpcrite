@@ -24,6 +24,7 @@ var httpsProxyAgent = require('https-proxy-agent');
 var host = process.env.HOST || '0.0.0.0';
 var port = process.env.PORT || 8000;
 
+const puppeteerAfp = require('puppeteer-afp');
 const puppeteer = require('puppeteer');
 const { addExtra } = require('puppeteer-extra');
 const StealthPlugin = require('puppeteer-extra-plugin-stealth');
@@ -814,14 +815,17 @@ app.get('/p/dog', async (req, res) => {
   const extension = path.join(__dirname, '1.3.1_1')
   const browser = await puppeteerS.launch({
     headless: true,
+
     args: [
       `--headless=chrome`,
+      //'--proxy-server=http://34.145.226.144:8080',
+      '--disk-cache-size=0',
       `--disable-extensions-except=${extension}`,
       `--load-extension=${extension}`,
-      '--no-sandbox'
+      //'--no-sandbox'
     ],
     ignoreDefaultArgs: ["--enable-automation"],//  ./myUserDataDir
-    //userDataDir: './myUserDataDir'//MUDARRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR <-------------------------------------------------------------------------mudar no deploy
+    userDataDir: './myUserDataDir'//MUDARRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR <-------------------------------------------------------------------------mudar no deploy
   })
 
   console.log('Init');
@@ -844,26 +848,40 @@ app.get('/p/dog', async (req, res) => {
   try {
 
     const context = await browser.createIncognitoBrowserContext();
-    const page = await browser.newPage();
-    const page2 = await browser.newPage();
+    const page = await context.newPage();
+    const page2 = await context.newPage();
 
     const userAgent = new UA();
     await page.setUserAgent(userAgent.toString())
     await page2.setUserAgent(userAgent.toString())
     await page.bringToFront();
-    await page.setRequestInterception(true);
+
+    const client1 = await page.target().createCDPSession();
+    await client1.send('Network.clearBrowserCookies');
+    await client1.send('Network.clearBrowserCache');
+
+
+
+    // I always use this method to get the active page, and not to have to open a new tab
+    //const page1 = (await context.pages())[0];
+    // use this instead of the page, to get all the cloaking benefits
+    const cloakedPage = puppeteerAfp(page);
     var index = 0;
     //let alive = await axios.get(`https://entrevidato.herokuapp.com/get`);
     //let d = alive.data;
     var api_k = ''
-    page.on('request', async request => {
-      if (request.url().includes('/register') && request.method() === "POST") {
 
+    await cloakedPage.setRequestInterception(true);
+    cloakedPage.on('request', async request => {
+
+      if (request.method() === "POST" && request.url().includes('/register')) {
+
+        request.abort()
         console.log('Intercepted');
         let url_ = request.url();
         let data_ = request.postData();
         let headers_ = request.headers();
-        request.abort()
+
         //62ae4f79883d62763d27004f
         //62ae5651883d62763d270050
         //62ae5984fd72c2764482cfea
@@ -871,7 +889,7 @@ app.get('/p/dog', async (req, res) => {
         //62ae5c2d883d62763d270052
         //62ae5fb211d1ea764b2f264c
         //62ae5f6f883d62763d270054
-        /*var resp = await */
+
         unirest.post(url_).proxy(`http://scrapingdog:${proxies[Math.floor(Math.random() * proxies.length)]}-country=random@proxy.scrapingdog.com:8081`).headers(headers_).send(JSON.parse(data_)).then((response) => {
           console.log(response.body)
           api_k = response.body._id;
@@ -885,14 +903,15 @@ app.get('/p/dog', async (req, res) => {
       }
 
     });
-    await page.goto('https://api.scrapingdog.com/register', { timeout: 25000, waitUntil: 'networkidle0' });
+    await cloakedPage.goto('https://api.scrapingdog.com/register', { timeout: 25000, waitUntil: 'networkidle0' });
 
 
 
     //--------------------------------------EMAIL
     task = randomIntFromInterval(0, 6)
     sid = randomIntFromInterval(100000, 999999)
-    new_tempmail = await axios.post(`https://api.mytemp.email/1/inbox/create?sid=${sid}&task=${task}&tt=138`);
+    new_tempmail = await axios.post(`https://api.mytemp.email/1/inbox/create?sid=${sid}&task=${task}&tt=139`);
+    //let new_tempmail = await unirest.post(`https://api.mytemp.email/1/inbox/create?sid=${sid}&task=${task}&tt=138`).proxy(`http://scrapingdog:${proxies[Math.floor(Math.random() * proxies.length)]}-country=random@proxy.scrapingdog.com:8081`).send()
     hash = new_tempmail.data.hash;
     mail = new_tempmail.data.inbox;
     console.log(new_tempmail.data.inbox)
@@ -905,7 +924,7 @@ app.get('/p/dog', async (req, res) => {
     await page.type('input[name="email"]', mail, { delay: 10 });
     await page.type('input[name="password"]', random_2, { delay: 10 });
     console.log(await recaptcha(page)); //Solve recaptcha on page;
-    await delay(2000)
+    //await delay(40000)
     await page.click('button[type="submit"]', { button: 'left' })
     await delay(10000)
     let seconds = 0;
@@ -922,16 +941,21 @@ app.get('/p/dog', async (req, res) => {
       confimation_link = body.match(/https\:\/\/api\.scrapingdog\.com\/verify\/[^\<\/]*/g)
       console.log(confimation_link[0])
     } else {
-      throw new Error('Timeout during resolve')
+      throw new Error('Timeout during resolve email confirmation link')
     }
     await page2.bringToFront();
+
     await page2.goto(confimation_link[0], { timeout: 35000, waitUntil: 'networkidle2' });
-    await delay(2000)
+    // let mmama = await unirest.get(confimation_link[0]).proxy(`http://scrapingdog:${proxies[Math.floor(Math.random() * proxies.length)]}-country=random@proxy.scrapingdog.com:8081`).send()
+    //console.log(mmama.body)
+    await delay(5000)
 
     console.log('DONE!!!')
+    console.log(await page2.url())
     res.write(`{"status": "success", "api_key":"${api_k}"}`);
     res.end();
-    browser.close()
+    await context.close();
+    await browser.close()
     //--------------------------------------
 
 
