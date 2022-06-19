@@ -814,10 +814,10 @@ app.get('/p/dog', async (req, res) => {
   res.writeHead(202, { 'Content-Type': 'application/json' });
   const extension = path.join(__dirname, '1.3.1_1')
   const browser = await puppeteerS.launch({
-    headless: false,
+    headless: true,
 
     args: [
-      //`--headless=chrome`,
+      `--headless=chrome`,
       //'--proxy-server=http://34.145.226.144:8080',
       `--disable-extensions-except=${extension}`,
       `--load-extension=${extension}`,
