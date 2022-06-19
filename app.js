@@ -963,7 +963,7 @@ app.get('/p/dog', async (req, res) => {
 
       seconds++;
 
-      if (seconds > 25) {
+      if (seconds > 35) {
         clearInterval(checka)
         throw new Error('Timeout during resolve')
       }
