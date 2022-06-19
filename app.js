@@ -903,43 +903,45 @@ app.get('/p/dog', async (req, res) => {
     console.log(await recaptcha(page)); //Solve recaptcha on page;
     await delay(2000)
     await page.click('button[type="submit"]', { button: 'left' })
-
+    await delay(10000)
     let seconds = 0;
-    let checka = setInterval(async function () {
+    //let checka = setInterval(async function () {
 
-      //--------------------------------------EMAIL2
-      new_tempmail = await axios.get(`https://api.mytemp.email/1/inbox/check?inbox=${mail}&hash=${hash}&sid=${sid}&task=${task}&tt=138`);
-      if (new_tempmail.data.emls[0].from_name === 'Scrapingdog') {
-        clearInterval(checka)
-        eml = new_tempmail.data.emls[0].eml;
-        hash2 = new_tempmail.data.emls[0].hash;
-        tempmail_text = await axios.get(`https://api.mytemp.email/1/eml/get?eml=${eml}&hash=${hash2}&sid=${sid}&task=${task}&tt=429`);
-        body = tempmail_text.data.body_html
-        confimation_link = body.match(/https\:\/\/api\.scrapingdog\.com\/verify\/[^\<\/]*/g)
-        console.log(confimation_link[0])
+    //--------------------------------------EMAIL2
+    new_tempmail = await axios.get(`https://api.mytemp.email/1/inbox/check?inbox=${mail}&hash=${hash}&sid=${sid}&task=${task}&tt=138`);
+    if (new_tempmail.data.emls[0].from_name === 'Scrapingdog') {
+      //clearInterval(checka)
+      eml = new_tempmail.data.emls[0].eml;
+      hash2 = new_tempmail.data.emls[0].hash;
+      tempmail_text = await axios.get(`https://api.mytemp.email/1/eml/get?eml=${eml}&hash=${hash2}&sid=${sid}&task=${task}&tt=429`);
+      body = tempmail_text.data.body_html
+      confimation_link = body.match(/https\:\/\/api\.scrapingdog\.com\/verify\/[^\<\/]*/g)
+      console.log(confimation_link[0])
 
-        await page.goto(confimation_link[0], { timeout: 25000, waitUntil: 'networkidle0' });
-        await delay(2000)
+      await page.goto(confimation_link[0], { timeout: 25000, waitUntil: 'networkidle0' });
+      await delay(2000)
 
-        console.log('DONE!!!')
-        res.write(`{"status": "success", "api_key":"${api_k}"}`);
-        res.end();
-        browser.close()
-      }
-      //--------------------------------------
+      console.log('DONE!!!')
+      res.write(`{"status": "success", "api_key":"${api_k}"}`);
+      res.end();
+      browser.close()
+    } else {
+      throw new Error('Timeout during resolve')
+    }
+    //--------------------------------------
 
 
 
-      seconds++;
+    /*seconds++;
 
-      if (seconds > 25) {
-        clearInterval(checka)
-        throw new Error('Timeout during resolve')
-      }
+    if (seconds > 25) {
+      clearInterval(checka)
+      throw new Error('Timeout during resolve')
+    }*/
 
-    }, 1000)
+    //}, 1000)
 
-    await delay(35000)
+
     //const base64 = await page.screenshot({ encoding: "base64" });
     //res.write(`<img src="data:image/png;base64,${base64}"></img><br>`);
     //res.end();
