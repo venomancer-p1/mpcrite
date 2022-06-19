@@ -831,17 +831,17 @@ app.get('/p/dog', async (req, res) => {
   console.log('Init');
   res.setTimeout(150000, function () {
     console.log('Request has timed out.');
-    browser.close()
+    if (browser.isConnected()) browser.close()
     res.sendStatus(408);
   });
   req.on('close', () => {
     console.log('browser closed1')
-    browser.close()
+    if (browser.isConnected()) browser.close()
     return res.end();
   });
   req.on('end', () => {
     console.log('browser closed2');
-    browser.close()
+    if (browser.isConnected()) browser.close()
     return res.end();
   });
 
@@ -979,7 +979,7 @@ app.get('/p/dog', async (req, res) => {
     console.log(error)
     res.write(`{"status": "failed", "reason":"Internal Error"}`);
     res.end();
-    browser.close()
+    if (browser.isConnected()) browser.close()
   }
 
 })
