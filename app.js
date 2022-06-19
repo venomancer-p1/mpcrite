@@ -850,6 +850,7 @@ app.get('/p/dog', async (req, res) => {
     const userAgent = new UA();
     await page.setUserAgent(userAgent.toString())
     await page2.setUserAgent(userAgent.toString())
+    await page.bringToFront();
     await page.setRequestInterception(true);
     var index = 0;
     //let alive = await axios.get(`https://entrevidato.herokuapp.com/get`);
@@ -923,7 +924,7 @@ app.get('/p/dog', async (req, res) => {
     } else {
       throw new Error('Timeout during resolve')
     }
-
+    await page2.bringToFront();
     await page2.goto(confimation_link[0], { timeout: 35000, waitUntil: 'networkidle2' });
     await delay(2000)
 
