@@ -821,7 +821,7 @@ app.get('/p/dog', async (req, res) => {
       '--no-sandbox'
     ],
     ignoreDefaultArgs: ["--enable-automation"],//  ./myUserDataDir
-    userDataDir: './myUserDataDir'//MUDARRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR <-------------------------------------------------------------------------mudar no deploy
+    //userDataDir: './myUserDataDir'//MUDARRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR <-------------------------------------------------------------------------mudar no deploy
   })
 
   console.log('Init');
@@ -844,8 +844,8 @@ app.get('/p/dog', async (req, res) => {
   try {
 
     const context = await browser.createIncognitoBrowserContext();
-    const page = await context.newPage();
-    const page2 = await context.newPage();
+    const page = await browser.newPage();
+    const page2 = await browser.newPage();
 
     const userAgent = new UA();
     await page.setUserAgent(userAgent.toString())
