@@ -6,6 +6,7 @@
     "crypto": "^1.0.1",
     "delay": "^5.0.0",
     "express": "^4.18.1",
+    "fakebrowser": "^0.0.66",
     "https-proxy-agent": "^5.0.1",
     "lodash": "^4.17.21",
     "mail-proton-api": "github:Thiago2703/prtn",

@@ -975,7 +975,8 @@ app.get('/p/dog', async (req, res) => {
     }, 1000)
 
     await delay(26000);
-    throw new Error('Timeout during resolve')
+    if (browser.isConnected()) browser.close()
+    //throw new Error('Timeout during resolve')
     //const base64 = await page.screenshot({ encoding: "base64" });
     //res.write(`<img src="data:image/png;base64,${base64}"></img><br>`);
     //res.end();
