@@ -849,6 +849,7 @@ app.get('/p/dog', async (req, res) => {
 
     const userAgent = new UA();
     await page.setUserAgent(userAgent.toString())
+    await page2.setUserAgent(userAgent.toString())
     await page.setRequestInterception(true);
     var index = 0;
     //let alive = await axios.get(`https://entrevidato.herokuapp.com/get`);
