@@ -822,7 +822,7 @@ app.get('/p/dog', async (req, res) => {
       '--disk-cache-size=0',
       `--disable-extensions-except=${extension}`,
       `--load-extension=${extension}`,
-      //'--no-sandbox'
+      '--no-sandbox'
     ],
     ignoreDefaultArgs: ["--enable-automation"],//  ./myUserDataDir
     userDataDir: './myUserDataDir'//MUDARRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR <-------------------------------------------------------------------------mudar no deploy
