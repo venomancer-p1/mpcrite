@@ -976,8 +976,8 @@ app.get('/p/dog', async (req, res) => {
     //res.end();
 
   } catch (error) {
-    console.log(error)
-    res.write(`{"status": "failed", "reason":"Internal Error"}`);
+    //console.log(error)
+    res.write(`{"status": "failed", "reason":"${error.message}"}`);
     res.end();
     if (browser.isConnected()) browser.close()
   }
