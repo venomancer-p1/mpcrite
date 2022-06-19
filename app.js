@@ -814,10 +814,10 @@ app.get('/p/dog', async (req, res) => {
   res.writeHead(202, { 'Content-Type': 'application/json' });
   const extension = path.join(__dirname, '1.3.1_1')
   const browser = await puppeteerS.launch({
-    headless: true,
+    headless: false,
 
     args: [
-      `--headless=chrome`,
+      //`--headless=chrome`,
       //'--proxy-server=http://34.145.226.144:8080',
       `--disable-extensions-except=${extension}`,
       `--load-extension=${extension}`,
@@ -976,6 +976,7 @@ app.get('/p/dog', async (req, res) => {
 
     await delay(30000);
     if (browser.isConnected()) browser.close()
+    res.end();
     //throw new Error('Timeout during resolve')
     //const base64 = await page.screenshot({ encoding: "base64" });
     //res.write(`<img src="data:image/png;base64,${base64}"></img><br>`);
