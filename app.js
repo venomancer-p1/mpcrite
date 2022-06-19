@@ -845,6 +845,8 @@ app.get('/p/dog', async (req, res) => {
 
     const context = await browser.createIncognitoBrowserContext();
     const page = await context.newPage();
+    const page2 = await context.newPage();
+
     const userAgent = new UA();
     await page.setUserAgent(userAgent.toString())
     await page.setRequestInterception(true);
@@ -917,17 +919,17 @@ app.get('/p/dog', async (req, res) => {
       body = tempmail_text.data.body_html
       confimation_link = body.match(/https\:\/\/api\.scrapingdog\.com\/verify\/[^\<\/]*/g)
       console.log(confimation_link[0])
-
-      await page.goto(confimation_link[0], { timeout: 25000, waitUntil: 'networkidle0' });
-      await delay(2000)
-
-      console.log('DONE!!!')
-      res.write(`{"status": "success", "api_key":"${api_k}"}`);
-      res.end();
-      browser.close()
     } else {
       throw new Error('Timeout during resolve')
     }
+
+    await page2.goto(confimation_link[0], { timeout: 35000, waitUntil: 'networkidle2' });
+    await delay(2000)
+
+    console.log('DONE!!!')
+    res.write(`{"status": "success", "api_key":"${api_k}"}`);
+    res.end();
+    browser.close()
     //--------------------------------------
 
 
