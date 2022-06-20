@@ -799,7 +799,11 @@ app.get('/p/cookie', async (req, res) => {
     await page.click('button[data-cy="setAccessibilityCookie"]', {
       button: 'left',
     });
+
     await delay(10000);
+    const base64 = await page.screenshot({ encoding: "base64" });
+    res.write(`<img src="data:image/png;base64,${base64}"></img><br>`);
+
     const cookies = await page.cookies()
     const cookie = cookies.find(element => element.name === 'hc_accessibility');
     res.write(`{"status": "success", "cookie":"${cookie.value}"}`);
