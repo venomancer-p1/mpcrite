@@ -14,12 +14,11 @@ const fs = require('fs');
 
 const protonmail = require('mail-proton-api');
 const cheerio = require('cheerio');
-const useProxy = require('puppeteer-page-proxy');
+
 var randomWords = require('random-words');
 const name_list = fs.readFileSync(path.join(__dirname, 'name_list.txt')).toString().replace(/\r\n/g, '\n').split('\n');
 const proxies = fs.readFileSync(path.join(__dirname, 'proxies.txt')).toString().replace(/\r\n/g, '\n').split('\n');
 var UA = require('user-agents');
-var httpsProxyAgent = require('https-proxy-agent');
 
 var host = process.env.HOST || '0.0.0.0';
 var port = process.env.PORT || 8000;
