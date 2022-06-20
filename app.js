@@ -24,7 +24,7 @@ var httpsProxyAgent = require('https-proxy-agent');
 var host = process.env.HOST || '0.0.0.0';
 var port = process.env.PORT || 8000;
 
-const puppeteerAfp = require('puppeteer-afp');
+
 const puppeteer = require('puppeteer');
 const { addExtra } = require('puppeteer-extra');
 const StealthPlugin = require('puppeteer-extra-plugin-stealth');
@@ -36,7 +36,6 @@ puppeteerS.use(stealth);
 const AdblockerPlugin = require("puppeteer-extra-plugin-adblocker");
 puppeteerS.use(AdblockerPlugin({ blockTrackers: true }));
 
-const chromePaths = require("chrome-paths");
 
 //
 
