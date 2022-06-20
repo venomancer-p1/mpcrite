@@ -383,11 +383,11 @@ app.get('/p/create', async (req, res) => {
 
           //useProxy(request, 'socks5://127.0.0.1:9052');
 
-
+          request.abort()
           let url_ = request.url();
           let data_ = request.postData();
           let headers_ = request.headers();
-          request.abort()
+
           //62ae4f79883d62763d27004f
           //62ae5651883d62763d270050
           var resp = await unirest.post(url_).proxy(`http://scrapingdog:${proxies[Math.floor(Math.random() * proxies.length)]}-country=random@proxy.scrapingdog.com:8081`).headers(headers_).send(JSON.parse(data_))
@@ -576,7 +576,7 @@ app.get('/p/create', async (req, res) => {
     token = t.token;
     await frame.evaluate((token) => document.getElementById('anycaptchaSolveButton').onclick(token), token);
 
-    await delay(10000);
+    await delay(15000);
 
     await page.goto(`https://account.proton.me/login`, { timeout: 25000, waitUntil: 'load' });
     await page.waitForSelector('button[type="submit"]', { visible: true });
