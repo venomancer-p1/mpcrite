@@ -584,8 +584,8 @@ app.get('/p/create', async (req, res) => {
     await page.type('#username', `${email}@${chosen_domain}`, { delay: 10 });
     await page.type('#password', pass, { delay: 10 });
     await page.click('button[type="submit"]', { button: 'left' })
-
-    await delay(10000);
+    await page.waitForSelector('div[data-testid="mailbox"]', { visible: true, timeout: 35000 }).catch();
+    //await delay(10000);
     /*
         if ((await page.evaluate(() => document.querySelector('.text-bold'))) !== null) {
           throw Error('FAILED TO LOGIN IN ACCOUNT')
