@@ -29,8 +29,14 @@ const puppeteer = require('puppeteer');
 const { addExtra } = require('puppeteer-extra');
 const StealthPlugin = require('puppeteer-extra-plugin-stealth');
 const puppeteerS = addExtra(puppeteer);
+
 const stealth = StealthPlugin();
 puppeteerS.use(stealth);
+
+const AdblockerPlugin = require("puppeteer-extra-plugin-adblocker");
+puppeteerS.use(AdblockerPlugin({ blockTrackers: true }));
+
+const chromePaths = require("chrome-paths");
 
 //
 
@@ -312,15 +318,26 @@ app.get('/p/create', async (req, res) => {
   console.log(chrome)*/
   const browser = await puppeteerS.launch({
     headless: true,
-    //executablePath: 'C:/Program Files/Google/Chrome/Application/chrome.exe',
+    slowMo: 10,
     args: [
       `--headless=chrome`,
+      '--disable-web-security',
+      '--ignore-certificate-errors',
+      //`--proxy-server=http://104.200.18.76:3128`,
+      "--no-sandbox",
+      "--disable-setuid-sandbox",
+      "--disable-infobars",
+      "--ignore-certifcate-errors-spki-list",
+      "--disable-accelerated-2d-canvas",
+      "--no-zygote",
+      "--no-first-run",
+      "--disable-dev-shm-usage",
       //'--disk-cache-size=0',
       //'--disable-web-security',
       //'--disable-features=IsolateOrigins,site-per-process',
       `--disable-extensions-except=${extension}`,
       `--load-extension=${extension}`,
-      '--no-sandbox'
+      //'--no-sandbox'
     ],
     ignoreDefaultArgs: ["--enable-automation"],//  ./myUserDataDir
     userDataDir: './myUserDataDir'//MUDARRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR <-------------------------------------------------------------------------mudar no deploy
@@ -346,6 +363,7 @@ app.get('/p/create', async (req, res) => {
 
     const context = await browser.createIncognitoBrowserContext();
     const page = await context.newPage();
+
     const userAgent = new UA();
     await page.setUserAgent(userAgent.toString())
 
@@ -361,7 +379,7 @@ app.get('/p/create', async (req, res) => {
         request.respond({
           status: 200,
           contentType: 'application/json',
-          body: `{"Code":1000,"IP":"185.153.176.182","Lat":-23.5335,"Long":-46.635899999999999,"Country":"BR","ISP":"Tefincom S.A."}`
+          body: `{"Code":1000,"IP":"185.153.176.180","Lat":-23.5335,"Long":-46.635899999999999,"Country":"BR","ISP":"Tefincom S.A."}`
         })
       } else if (request.url().includes('api/v4/users')) {
 
@@ -815,13 +833,30 @@ app.get('/p/dog', async (req, res) => {
   const extension = path.join(__dirname, '1.3.1_1')
   const browser = await puppeteerS.launch({
     headless: true,
+    //executablePath: chromePaths.chrome,
 
+
+    slowMo: 10,
+    //devtools: true,
     args: [
       `--headless=chrome`,
-      //'--proxy-server=http://34.145.226.144:8080',
+      '--disable-web-security',
+      '--ignore-certificate-errors',
+      //`--proxy-server=http://104.200.18.76:3128`,
+      "--no-sandbox",
+      "--disable-setuid-sandbox",
+      "--disable-infobars",
+      "--ignore-certifcate-errors-spki-list",
+      "--disable-accelerated-2d-canvas",
+      "--no-zygote",
+      "--no-first-run",
+      "--disable-dev-shm-usage",
+      //'--disk-cache-size=0',
+      //'--disable-web-security',
+      //'--disable-features=IsolateOrigins,site-per-process',
       `--disable-extensions-except=${extension}`,
       `--load-extension=${extension}`,
-      '--no-sandbox'
+      //'--no-sandbox'
     ],
     ignoreDefaultArgs: ["--enable-automation"],//  ./myUserDataDir
     userDataDir: './myUserDataDir'//MUDARRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR <-------------------------------------------------------------------------mudar no deploy
@@ -846,8 +881,13 @@ app.get('/p/dog', async (req, res) => {
 
   try {
 
-    const context = await browser.createIncognitoBrowserContext();
-    const page = await context.newPage();
+    //const context = await browser.createIncognitoBrowserContext();
+    const context = browser.defaultBrowserContext();
+    context.overridePermissions("https://api.scrapingdog.com/", ["clipboard-read"]);
+    const pages = await browser.pages();
+    const page = pages[0];
+    await page.setDefaultNavigationTimeout(0);
+    //const page = await context.newPage();
     const page2 = await context.newPage();
     //await page.emulateTimezone('America/Chicago');
     //await page2.emulateTimezone('America/Chicago');
@@ -866,14 +906,14 @@ app.get('/p/dog', async (req, res) => {
     // I always use this method to get the active page, and not to have to open a new tab
     //const page1 = (await context.pages())[0];
     // use this instead of the page, to get all the cloaking benefits
-    const cloakedPage = puppeteerAfp(page);
+    // cloakedPage = puppeteerAfp(page);
     var index = 0;
     //let alive = await axios.get(`https://entrevidato.herokuapp.com/get`);
     //let d = alive.data;
     var api_k = ''
 
-    await cloakedPage.setRequestInterception(true);
-    cloakedPage.on('request', async request => {
+    await page.setRequestInterception(true);
+    page.on('request', async request => {
 
       if (request.method() === "POST" && request.url().includes('/register')) {
         console.log('Intercepted');
@@ -907,9 +947,12 @@ app.get('/p/dog', async (req, res) => {
       }
 
     });
-    await cloakedPage.goto('https://api.scrapingdog.com/register', { timeout: 25000, waitUntil: 'networkidle0' });
 
+    //await page.setUserAgent('Mozilla/5.0 (Windows NT 5.1; rv:5.0) Gecko/20100101 Firefox/5.0');
+    //await page.goto('https://reqbin.com/', { timeout: 95000, waitUntil: 'networkidle0' });
+    await page.goto('https://api.scrapingdog.com/register', { timeout: 95000, waitUntil: 'networkidle0' });
 
+    //await delay(55555555)
 
     //--------------------------------------EMAIL
     task = randomIntFromInterval(0, 6)
@@ -956,10 +999,10 @@ app.get('/p/dog', async (req, res) => {
         await delay(5000)
 
         console.log('DONE!!!')
-        console.log(await page2.url())
+        //console.log(await page2.url())
         res.write(`{"status": "success", "api_key":"${api_k}"}`);
         res.end();
-        await context.close();
+        //await context.close();
         await browser.close()
         //--------------------------------------
       }
