@@ -32,8 +32,6 @@ const puppeteerS = addExtra(puppeteer);
 const stealth = StealthPlugin();
 puppeteerS.use(stealth);
 
-const AdblockerPlugin = require("puppeteer-extra-plugin-adblocker");
-puppeteerS.use(AdblockerPlugin({ blockTrackers: true }));
 
 
 //

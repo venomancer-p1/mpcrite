@@ -10,7 +10,6 @@
     "mail-proton-api": "github:Thiago2703/prtn",
     "puppeteer": "^14.3.0",
     "puppeteer-extra": "^3.2.3",
-    "puppeteer-extra-plugin-adblocker": "^2.12.0",
     "puppeteer-extra-plugin-stealth": "^2.9.0",
     "querystring": "^0.2.1",
     "random-words": "^1.1.2",
