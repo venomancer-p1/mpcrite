@@ -93,7 +93,7 @@ const extendTimeoutMiddleware = (req, res, next) => {
   let isDataSent = false;
 
   // Only extend the timeout for API requests
-  if (!req.url.includes('/p/create') && !req.url.includes('/p/access') && !req.url.includes('/p/dog')) {
+  if (!req.url.includes('/p/create') && !req.url.includes('/p/access') && !req.url.includes('/p/dog') && !req.url.includes('/p/cookie')) {
     next();
     return;
   }
@@ -794,7 +794,7 @@ app.get('/p/cookie', async (req, res) => {
     const userAgent = new UA();
     await page.setUserAgent(userAgent.toString())
 
-    await page.goto(`${req.query.link}`, { timeout: 25000, waitUntil: 'networkidle2' });
+    await page.goto(`${req.query.link}`, { timeout: 35000, waitUntil: 'networkidle2' });
     await page.waitForSelector('button[data-cy="setAccessibilityCookie"]');
     await page.click('button[data-cy="setAccessibilityCookie"]', {
       button: 'left',
