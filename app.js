@@ -795,14 +795,16 @@ app.get('/p/cookie', async (req, res) => {
     await page.setUserAgent(userAgent.toString())
 
     await page.goto(`${req.query.link}`, { timeout: 35000, waitUntil: 'networkidle2' });
+    await delay(30000)
+    const base64 = await page.screenshot({ encoding: "base64" });
+    res.write(`<img src="data:image/png;base64,${base64}"></img><br>`);
     await page.waitForSelector('button[data-cy="setAccessibilityCookie"]');
     await page.click('button[data-cy="setAccessibilityCookie"]', {
       button: 'left',
     });
 
     await delay(10000);
-    const base64 = await page.screenshot({ encoding: "base64" });
-    res.write(`<img src="data:image/png;base64,${base64}"></img><br>`);
+
 
     const cookies = await page.cookies()
     const cookie = cookies.find(element => element.name === 'hc_accessibility');
