@@ -707,10 +707,11 @@ app.get('/p/access', async (req, res) => {
     browser.close()
     return res.end();
   });
-  const context = await browser.createIncognitoBrowserContext();
-  const page = await context.newPage();
+
   try {
 
+    const context = await browser.createIncognitoBrowserContext();
+    const page = await context.newPage();
     const userAgent = new UA();
     await page.setUserAgent(userAgent.toString())
 
@@ -877,14 +878,17 @@ app.get('/p/dog', async (req, res) => {
     return res.end();
   });
 
+
+  //const context = await browser.createIncognitoBrowserContext();
+  const context = browser.defaultBrowserContext();
+  context.overridePermissions("https://api.scrapingdog.com/", ["clipboard-read"]);
+  const pages = await browser.pages();
+  const page = pages[0];
+  await page.setDefaultNavigationTimeout(0);
+
   try {
 
-    //const context = await browser.createIncognitoBrowserContext();
-    const context = browser.defaultBrowserContext();
-    context.overridePermissions("https://api.scrapingdog.com/", ["clipboard-read"]);
-    const pages = await browser.pages();
-    const page = pages[0];
-    await page.setDefaultNavigationTimeout(0);
+
     //const page = await context.newPage();
     const page2 = await context.newPage();
     //await page.emulateTimezone('America/Chicago');
