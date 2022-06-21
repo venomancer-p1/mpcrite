@@ -830,6 +830,16 @@ app.get('/p/dog', async (req, res) => {
 
   res.writeHead(202, { 'Content-Type': 'application/json' });
   const extension = path.join(__dirname, '1.3.1_1')
+  let lst = [
+    'socks5://127.0.0.1:9060',
+    'socks5://127.0.0.1:9061',
+    'socks5://127.0.0.1:9062',
+    'socks5://127.0.0.1:9063',
+    'socks5://127.0.0.1:9064',
+    'socks5://127.0.0.1:9065'
+  ];
+  const rnd = lst[Math.floor(Math.random() * lst.length)];
+  console.log('CHOSEN PROXY: ', rnd);
   const browser = await puppeteerS.launch({
     headless: true,
     //executablePath: chromePaths.chrome,
@@ -841,7 +851,7 @@ app.get('/p/dog', async (req, res) => {
       `--headless=chrome`,
       '--disable-web-security',
       '--ignore-certificate-errors',
-      //`--proxy-server=http://104.200.18.76:3128`,
+      `--proxy-server=${rnd}`,
       "--no-sandbox",
       "--disable-setuid-sandbox",
       "--disable-infobars",
