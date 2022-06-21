@@ -62,7 +62,7 @@ async function solve_recaptcha(page) {
 
         try {
 
-            await page.waitForSelector('iframe[src*="https://www.google.com/recaptcha/api2/anchor"]', { visible: true, timeout: 30000 });
+            await page.waitForSelector('iframe[src*="https://www.google.com/recaptcha/api2/anchor"]', { visible: true, timeout: 45000 });
             const frames = await page.frames();
             const frame = frames.find(frame => frame.url().includes('/recaptcha/api2/anchor?'));
             const content_frame = frames.find(frame => frame.url().includes('/recaptcha/api2/bframe?'));

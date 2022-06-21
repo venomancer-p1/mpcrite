@@ -973,12 +973,12 @@ app.get('/p/dog', async (req, res) => {
     console.log(new_tempmail.data.inbox)
     //--------------------------------------
 
-    await delay(3000)
-    let random_1 = name_list[Math.floor(Math.random() * name_list.length)] + randomWords({ exactly: 2, join: '' });
+    await delay(13000)
+    /*let random_1 = name_list[Math.floor(Math.random() * name_list.length)] + randomWords({ exactly: 2, join: '' });
     let random_2 = name_list[Math.floor(Math.random() * name_list.length)] + randomWords({ exactly: 3, join: '' });
     await page.type('#defaultFormLoginEmailEx', random_1, { delay: 10 });
     await page.type('input[name="email"]', mail, { delay: 10 });
-    await page.type('input[name="password"]', random_2, { delay: 10 });
+    await page.type('input[name="password"]', random_2, { delay: 10 });*/
     console.log(await recaptcha(page)); //Solve recaptcha on page;
     await delay(5000)
 
