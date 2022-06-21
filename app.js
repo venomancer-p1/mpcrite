@@ -838,7 +838,7 @@ app.get('/p/dog', async (req, res) => {
     slowMo: 10,
     //devtools: true,
     args: [
-      //`--headless=chrome`,
+      `--headless=chrome`,
       // '--disable-web-security',
       // '--ignore-certificate-errors',
       //`--proxy-server=http://104.200.18.76:3128`,
