@@ -921,7 +921,7 @@ app.get('/p/dog', async (req, res) => {
     //let d = alive.data;
     var api_k = ''
 
-    await page.setRequestInterception(true);
+    /*await page.setRequestInterception(true);
     page.on('request', async request => {
 
       if (request.method() === "POST" && request.url().includes('/register')) {
@@ -955,7 +955,7 @@ app.get('/p/dog', async (req, res) => {
         request.continue();
       }
 
-    });
+    });*/
 
     //await page.setUserAgent('Mozilla/5.0 (Windows NT 5.1; rv:5.0) Gecko/20100101 Firefox/5.0');
     //await page.goto('https://reqbin.com/', { timeout: 95000, waitUntil: 'networkidle0' });
