@@ -707,11 +707,10 @@ app.get('/p/access', async (req, res) => {
     browser.close()
     return res.end();
   });
-
+  const context = await browser.createIncognitoBrowserContext();
+  const page = await context.newPage();
   try {
 
-    const context = await browser.createIncognitoBrowserContext();
-    const page = await context.newPage();
     const userAgent = new UA();
     await page.setUserAgent(userAgent.toString())
 
