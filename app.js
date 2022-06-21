@@ -390,7 +390,7 @@ app.get('/p/create', async (req, res) => {
 
           //62ae4f79883d62763d27004f
           //62ae5651883d62763d270050
-          var resp = await unirest.post(url_).proxy(`http://scrapingdog:${proxies[Math.floor(Math.random() * proxies.length)]}-country=random@proxy.scrapingdog.com:8081`).headers(headers_).send(JSON.parse(data_))
+          var resp = await unirest.post(url_).headers(headers_).send(JSON.parse(data_))
           console.log(resp.body)
           /*var headers = headers_;
           var data = JSON.parse(data_);
@@ -829,7 +829,6 @@ app.get('/p/dog', async (req, res) => {
     }*/
 
   res.writeHead(202, { 'Content-Type': 'application/json' });
-  let lst = ['socks5://127.0.0.1:9060', 'socks5://127.0.0.1:9061', 'socks5://127.0.0.1:9062', 'socks5://127.0.0.1:9063', 'socks5://127.0.0.1:9064', 'socks5://127.0.0.1:9065']
   const extension = path.join(__dirname, '1.3.1_1')
   const browser = await puppeteerS.launch({
     headless: true,
@@ -932,10 +931,9 @@ app.get('/p/dog', async (req, res) => {
         //62ae5c2d883d62763d270052
         //62ae5fb211d1ea764b2f264c
         //62ae5f6f883d62763d270054
-        let c = lst[Math.floor(Math.random() * lst.length)]
+        let c = proxies[Math.floor(Math.random() * proxies.length)]
         console.log(c)
-        unirest.post(url_).proxy(`${c}`).send(JSON.parse(data_)).then((response) => {
-          console.log('response.body')
+        unirest.post(url_).proxy(`http://scrapingdog:${c}-country=random@proxy.scrapingdog.com:8081`).send(JSON.parse(data_)).then((response) => {
           console.log(response.body)
           api_k = response.body._id;
         })
