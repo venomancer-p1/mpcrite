@@ -390,7 +390,7 @@ app.get('/p/create', async (req, res) => {
 
           //62ae4f79883d62763d27004f
           //62ae5651883d62763d270050
-          var resp = await unirest.post(url_).headers(headers_).send(JSON.parse(data_))
+          var resp = await unirest.post(url_).proxy(`http://scrapingdog:${proxies[Math.floor(Math.random() * proxies.length)]}-country=random@proxy.scrapingdog.com:8081`).headers(headers_).send(JSON.parse(data_))
           console.log(resp.body)
           /*var headers = headers_;
           var data = JSON.parse(data_);
