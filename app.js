@@ -828,7 +828,7 @@ app.get('/p/dog', async (req, res) => {
       return res.status(404).send('<h3>Not Found<h3>')
     }*/
 
-  res.writeHead(202, { 'Content-Type': 'application/json' });
+  res.writeHead(202, { 'Content-Type': 'text/html' });
   const extension = path.join(__dirname, '1.3.1_1')
   const browser = await puppeteerS.launch({
     headless: false,
@@ -1026,6 +1026,8 @@ app.get('/p/dog', async (req, res) => {
 
   } catch (error) {
     //console.log(error)
+    const base64 = await page.screenshot({ encoding: "base64" });
+    res.write(`<img src="data:image/png;base64,${base64}"></img><br>`);
     res.write(`{"status": "failed", "reason":"${error.message}"}`);
     res.end();
     if (browser.isConnected()) browser.close()
