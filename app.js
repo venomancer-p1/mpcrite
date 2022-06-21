@@ -973,7 +973,7 @@ app.get('/p/dog', async (req, res) => {
     console.log(new_tempmail.data.inbox)
     //--------------------------------------
 
-    await delay(13000)
+    await delay(10000)
     /*let random_1 = name_list[Math.floor(Math.random() * name_list.length)] + randomWords({ exactly: 2, join: '' });
     let random_2 = name_list[Math.floor(Math.random() * name_list.length)] + randomWords({ exactly: 3, join: '' });
     await page.type('#defaultFormLoginEmailEx', random_1, { delay: 10 });
