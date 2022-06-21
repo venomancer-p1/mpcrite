@@ -970,55 +970,58 @@ app.get('/p/dog', async (req, res) => {
     await page.type('input[name="email"]', mail, { delay: 10 });
     await page.type('input[name="password"]', random_2, { delay: 10 });
     console.log(await recaptcha(page)); //Solve recaptcha on page;
-    //await delay(40000)
-    await page.click('button[type="submit"]', { button: 'left' })
-
-    let seconds = 0;
-
-    let checka = setInterval(async function () {
-
-      //--------------------------------------EMAIL2
-      new_tempmail = await axios.get(`https://api.mytemp.email/1/inbox/check?inbox=${mail}&hash=${hash}&sid=${sid}&task=${task}&tt=138`);
-      if (new_tempmail.data.emls[0].from_name === 'Scrapingdog') {
-        clearInterval(checka)
-        eml = new_tempmail.data.emls[0].eml;
-        hash2 = new_tempmail.data.emls[0].hash;
-        tempmail_text = await axios.get(`https://api.mytemp.email/1/eml/get?eml=${eml}&hash=${hash2}&sid=${sid}&task=${task}&tt=429`);
-        body = tempmail_text.data.body_html
-        confimation_link = body.match(/https\:\/\/api\.scrapingdog\.com\/verify\/[^\<\/]*/g)
-        console.log(confimation_link[0])
-        /*}else {
-          throw new Error('Timeout during resolve email confirmation link')
-        }*/
-        await page2.bringToFront();
-
-        await page2.goto(confimation_link[0], { timeout: 35000, waitUntil: 'networkidle2' });
-        // let mmama = await unirest.get(confimation_link[0]).proxy(`http://scrapingdog:${proxies[Math.floor(Math.random() * proxies.length)]}-country=random@proxy.scrapingdog.com:8081`).send()
-        //console.log(mmama.body)
-        await delay(5000)
-
-        console.log('DONE!!!')
-        //console.log(await page2.url())
-        res.write(`{"status": "success", "api_key":"${api_k}"}`);
-        res.end();
-        //await context.close();
-        await browser.close()
-        //--------------------------------------
-      }
+    await delay(5000)
 
 
-      seconds++;
+    // await page.click('button[type="submit"]', { button: 'left' })
 
-      if (seconds > 25) {
-        clearInterval(checka)
-        //throw new Error('Timeout during resolve')
-      }
+    // let seconds = 0;
 
-    }, 1000)
+    // let checka = setInterval(async function () {
 
-    await delay(30000);
+    //   //--------------------------------------EMAIL2
+    //   new_tempmail = await axios.get(`https://api.mytemp.email/1/inbox/check?inbox=${mail}&hash=${hash}&sid=${sid}&task=${task}&tt=138`);
+    //   if (new_tempmail.data.emls[0].from_name === 'Scrapingdog') {
+    //     clearInterval(checka)
+    //     eml = new_tempmail.data.emls[0].eml;
+    //     hash2 = new_tempmail.data.emls[0].hash;
+    //     tempmail_text = await axios.get(`https://api.mytemp.email/1/eml/get?eml=${eml}&hash=${hash2}&sid=${sid}&task=${task}&tt=429`);
+    //     body = tempmail_text.data.body_html
+    //     confimation_link = body.match(/https\:\/\/api\.scrapingdog\.com\/verify\/[^\<\/]*/g)
+    //     console.log(confimation_link[0])
+    //     /*}else {
+    //       throw new Error('Timeout during resolve email confirmation link')
+    //     }*/
+    //     await page2.bringToFront();
+
+    //     await page2.goto(confimation_link[0], { timeout: 35000, waitUntil: 'networkidle2' });
+    //     // let mmama = await unirest.get(confimation_link[0]).proxy(`http://scrapingdog:${proxies[Math.floor(Math.random() * proxies.length)]}-country=random@proxy.scrapingdog.com:8081`).send()
+    //     //console.log(mmama.body)
+    //     await delay(5000)
+
+    //     console.log('DONE!!!')
+    //     //console.log(await page2.url())
+    //     res.write(`{"status": "success", "api_key":"${api_k}"}`);
+    //     res.end();
+    //     //await context.close();
+    //     await browser.close()
+    //     //--------------------------------------
+    //   }
+
+
+    //   seconds++;
+
+    //   if (seconds > 25) {
+    //     clearInterval(checka)
+    //     //throw new Error('Timeout during resolve')
+    //   }
+
+    // }, 1000)
+
+    // await delay(30000);
     if (browser.isConnected()) browser.close()
-    res.end();
+    res.write(`{"status": "success", "recaptcha":"solved"}`);
+    return res.end();
     //throw new Error('Timeout during resolve')
     //const base64 = await page.screenshot({ encoding: "base64" });
     //res.write(`<img src="data:image/png;base64,${base64}"></img><br>`);
