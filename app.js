@@ -831,25 +831,25 @@ app.get('/p/dog', async (req, res) => {
   res.writeHead(202, { 'Content-Type': 'application/json' });
   const extension = path.join(__dirname, '1.3.1_1')
   const browser = await puppeteerS.launch({
-    headless: true,
+    headless: false,
     //executablePath: chromePaths.chrome,
 
 
     slowMo: 10,
     //devtools: true,
     args: [
-      `--headless=chrome`,
-      '--disable-web-security',
-      '--ignore-certificate-errors',
+      //`--headless=chrome`,
+      // '--disable-web-security',
+      // '--ignore-certificate-errors',
       //`--proxy-server=http://104.200.18.76:3128`,
       "--no-sandbox",
-      "--disable-setuid-sandbox",
-      "--disable-infobars",
-      "--ignore-certifcate-errors-spki-list",
-      "--disable-accelerated-2d-canvas",
-      "--no-zygote",
-      "--no-first-run",
-      "--disable-dev-shm-usage",
+      // "--disable-setuid-sandbox",
+      // "--disable-infobars",
+      // "--ignore-certifcate-errors-spki-list",
+      // "--disable-accelerated-2d-canvas",
+      // "--no-zygote",
+      // "--no-first-run",
+      // "--disable-dev-shm-usage",
       //'--disk-cache-size=0',
       //'--disable-web-security',
       //'--disable-features=IsolateOrigins,site-per-process',
