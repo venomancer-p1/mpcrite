@@ -576,7 +576,7 @@ app.get('/p/create', async (req, res) => {
     token = t.token;
     await frame.evaluate((token) => document.getElementById('anycaptchaSolveButton').onclick(token), token);
 
-    await delay(15000);
+    await delay(10000);
 
     await page.goto(`https://account.proton.me/login`, { timeout: 25000, waitUntil: 'load' });
     await page.waitForSelector('button[type="submit"]', { visible: true });
@@ -829,17 +829,8 @@ app.get('/p/dog', async (req, res) => {
     }*/
 
   res.writeHead(202, { 'Content-Type': 'application/json' });
+  let lst = ['socks5://127.0.0.1:9060', 'socks5://127.0.0.1:9061', 'socks5://127.0.0.1:9062', 'socks5://127.0.0.1:9063', 'socks5://127.0.0.1:9064', 'socks5://127.0.0.1:9065']
   const extension = path.join(__dirname, '1.3.1_1')
-  let lst = [
-    'socks5://127.0.0.1:9060',
-    'socks5://127.0.0.1:9061',
-    'socks5://127.0.0.1:9062',
-    'socks5://127.0.0.1:9063',
-    'socks5://127.0.0.1:9064',
-    'socks5://127.0.0.1:9065'
-  ];
-  const rnd = lst[Math.floor(Math.random() * lst.length)];
-  console.log('CHOSEN PROXY: ', rnd);
   const browser = await puppeteerS.launch({
     headless: true,
     //executablePath: chromePaths.chrome,
@@ -851,7 +842,7 @@ app.get('/p/dog', async (req, res) => {
       `--headless=chrome`,
       '--disable-web-security',
       '--ignore-certificate-errors',
-      `--proxy-server=${rnd}`,
+      //`--proxy-server=http://104.200.18.76:3128`,
       "--no-sandbox",
       "--disable-setuid-sandbox",
       "--disable-infobars",
@@ -921,7 +912,7 @@ app.get('/p/dog', async (req, res) => {
     //let d = alive.data;
     var api_k = ''
 
-    /*await page.setRequestInterception(true);
+    await page.setRequestInterception(true);
     page.on('request', async request => {
 
       if (request.method() === "POST" && request.url().includes('/register')) {
@@ -941,9 +932,10 @@ app.get('/p/dog', async (req, res) => {
         //62ae5c2d883d62763d270052
         //62ae5fb211d1ea764b2f264c
         //62ae5f6f883d62763d270054
-        let c = proxies[Math.floor(Math.random() * proxies.length)]
+        let c = lst[Math.floor(Math.random() * lst.length)]
         console.log(c)
-        unirest.post(url_).proxy(`http://scrapingdog:${c}-country=random@proxy.scrapingdog.com:8081`).send(JSON.parse(data_)).then((response) => {
+        unirest.post(url_).proxy(`${c}`).send(JSON.parse(data_)).then((response) => {
+          console.log('response.body')
           console.log(response.body)
           api_k = response.body._id;
         })
@@ -955,7 +947,7 @@ app.get('/p/dog', async (req, res) => {
         request.continue();
       }
 
-    });*/
+    });
 
     //await page.setUserAgent('Mozilla/5.0 (Windows NT 5.1; rv:5.0) Gecko/20100101 Firefox/5.0');
     //await page.goto('https://reqbin.com/', { timeout: 95000, waitUntil: 'networkidle0' });
@@ -973,65 +965,62 @@ app.get('/p/dog', async (req, res) => {
     console.log(new_tempmail.data.inbox)
     //--------------------------------------
 
-    await delay(10000)
-    /*let random_1 = name_list[Math.floor(Math.random() * name_list.length)] + randomWords({ exactly: 2, join: '' });
+    await delay(3000)
+    let random_1 = name_list[Math.floor(Math.random() * name_list.length)] + randomWords({ exactly: 2, join: '' });
     let random_2 = name_list[Math.floor(Math.random() * name_list.length)] + randomWords({ exactly: 3, join: '' });
     await page.type('#defaultFormLoginEmailEx', random_1, { delay: 10 });
     await page.type('input[name="email"]', mail, { delay: 10 });
-    await page.type('input[name="password"]', random_2, { delay: 10 });*/
+    await page.type('input[name="password"]', random_2, { delay: 10 });
     console.log(await recaptcha(page)); //Solve recaptcha on page;
-    await delay(5000)
+    //await delay(40000)
+    await page.click('button[type="submit"]', { button: 'left' })
+
+    let seconds = 0;
+
+    let checka = setInterval(async function () {
+
+      //--------------------------------------EMAIL2
+      new_tempmail = await axios.get(`https://api.mytemp.email/1/inbox/check?inbox=${mail}&hash=${hash}&sid=${sid}&task=${task}&tt=138`);
+      if (new_tempmail.data.emls[0].from_name === 'Scrapingdog') {
+        clearInterval(checka)
+        eml = new_tempmail.data.emls[0].eml;
+        hash2 = new_tempmail.data.emls[0].hash;
+        tempmail_text = await axios.get(`https://api.mytemp.email/1/eml/get?eml=${eml}&hash=${hash2}&sid=${sid}&task=${task}&tt=429`);
+        body = tempmail_text.data.body_html
+        confimation_link = body.match(/https\:\/\/api\.scrapingdog\.com\/verify\/[^\<\/]*/g)
+        console.log(confimation_link[0])
+        /*}else {
+          throw new Error('Timeout during resolve email confirmation link')
+        }*/
+        await page2.bringToFront();
+
+        await page2.goto(confimation_link[0], { timeout: 35000, waitUntil: 'networkidle2' });
+        // let mmama = await unirest.get(confimation_link[0]).proxy(`http://scrapingdog:${proxies[Math.floor(Math.random() * proxies.length)]}-country=random@proxy.scrapingdog.com:8081`).send()
+        //console.log(mmama.body)
+        await delay(5000)
+
+        console.log('DONE!!!')
+        //console.log(await page2.url())
+        res.write(`{"status": "success", "api_key":"${api_k}"}`);
+        res.end();
+        //await context.close();
+        await browser.close()
+        //--------------------------------------
+      }
 
 
-    // await page.click('button[type="submit"]', { button: 'left' })
+      seconds++;
 
-    // let seconds = 0;
+      if (seconds > 25) {
+        clearInterval(checka)
+        //throw new Error('Timeout during resolve')
+      }
 
-    // let checka = setInterval(async function () {
+    }, 1000)
 
-    //   //--------------------------------------EMAIL2
-    //   new_tempmail = await axios.get(`https://api.mytemp.email/1/inbox/check?inbox=${mail}&hash=${hash}&sid=${sid}&task=${task}&tt=138`);
-    //   if (new_tempmail.data.emls[0].from_name === 'Scrapingdog') {
-    //     clearInterval(checka)
-    //     eml = new_tempmail.data.emls[0].eml;
-    //     hash2 = new_tempmail.data.emls[0].hash;
-    //     tempmail_text = await axios.get(`https://api.mytemp.email/1/eml/get?eml=${eml}&hash=${hash2}&sid=${sid}&task=${task}&tt=429`);
-    //     body = tempmail_text.data.body_html
-    //     confimation_link = body.match(/https\:\/\/api\.scrapingdog\.com\/verify\/[^\<\/]*/g)
-    //     console.log(confimation_link[0])
-    //     /*}else {
-    //       throw new Error('Timeout during resolve email confirmation link')
-    //     }*/
-    //     await page2.bringToFront();
-
-    //     await page2.goto(confimation_link[0], { timeout: 35000, waitUntil: 'networkidle2' });
-    //     // let mmama = await unirest.get(confimation_link[0]).proxy(`http://scrapingdog:${proxies[Math.floor(Math.random() * proxies.length)]}-country=random@proxy.scrapingdog.com:8081`).send()
-    //     //console.log(mmama.body)
-    //     await delay(5000)
-
-    //     console.log('DONE!!!')
-    //     //console.log(await page2.url())
-    //     res.write(`{"status": "success", "api_key":"${api_k}"}`);
-    //     res.end();
-    //     //await context.close();
-    //     await browser.close()
-    //     //--------------------------------------
-    //   }
-
-
-    //   seconds++;
-
-    //   if (seconds > 25) {
-    //     clearInterval(checka)
-    //     //throw new Error('Timeout during resolve')
-    //   }
-
-    // }, 1000)
-
-    // await delay(30000);
+    await delay(30000);
     if (browser.isConnected()) browser.close()
-    res.write(`{"status": "success", "recaptcha":"solved"}`);
-    return res.end();
+    res.end();
     //throw new Error('Timeout during resolve')
     //const base64 = await page.screenshot({ encoding: "base64" });
     //res.write(`<img src="data:image/png;base64,${base64}"></img><br>`);
