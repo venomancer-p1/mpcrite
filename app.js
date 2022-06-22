@@ -952,7 +952,7 @@ app.get('/p/dog', async (req, res) => {
 
     //await page.setUserAgent('Mozilla/5.0 (Windows NT 5.1; rv:5.0) Gecko/20100101 Firefox/5.0');
     //await page.goto('https://reqbin.com/', { timeout: 95000, waitUntil: 'networkidle0' });
-    await page.goto('https://api.scrapingdog.com/register', { timeout: 95000, waitUntil: 'networkidle0' });
+    await page.goto(`https://api.scrapingdog.com/scrape?api_key=${proxies[Math.floor(Math.random() * proxies.length)]}&dynamic=true&premium=true&url=https://api.scrapingdog.com/register`, { timeout: 95000, waitUntil: 'networkidle0' });
 
     //await delay(55555555)
 
@@ -995,7 +995,7 @@ app.get('/p/dog', async (req, res) => {
         }*/
         await page2.bringToFront();
 
-        await page2.goto(confimation_link[0], { timeout: 35000, waitUntil: 'networkidle2' });
+        await page2.goto(`https://api.scrapingdog.com/scrape?api_key=${proxies[Math.floor(Math.random() * proxies.length)]}&dynamic=true&premium=true&url=${confimation_link[0]}`, { timeout: 35000, waitUntil: 'networkidle2' });
         // let mmama = await unirest.get(confimation_link[0]).proxy(`http://scrapingdog:${proxies[Math.floor(Math.random() * proxies.length)]}-country=random@proxy.scrapingdog.com:8081`).send()
         //console.log(mmama.body)
         await delay(5000)
